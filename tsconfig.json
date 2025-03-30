@@ -33,5 +33,12 @@
       "@cloudflare/workers-types/2023-07-01",
       "vite/client"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/**/*"
+  ],
 }
