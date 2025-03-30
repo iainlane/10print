@@ -1,0 +1,67 @@
+{
+  "dependencies": {
+    "@hono/react-renderer": "^0.3.0",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.3",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slider": "^1.2.3",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@tailwindcss/vite": "^4.0.17",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "hono": "^4.7.5",
+    "jsx-runtime": "link:hono/jsx/dom/jsx-runtime",
+    "lucide-react": "^0.485.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.17",
+    "tw-animate-css": "^1.2.5",
+    "use-debounce": "^10.0.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250327.0",
+    "@eslint/js": "^9.23.0",
+    "@hono/vite-build": "^1.2.0",
+    "@hono/vite-dev-server": "^0.19.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.13.14",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-no-relative-import-paths": "^1.6.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "syncpack": "^13.0.3",
+    "typescript-eslint": "^8.28.0",
+    "vite": "^6.1.1",
+    "wrangler": "^4.4.0"
+  },
+  "overrides": {
+    "is-interactive": "npm:@socketregistry/is-interactive@^1",
+    "is-unicode-supported": "npm:@socketregistry/is-unicode-supported@^1"
+  },
+  "resolutions": {
+    "is-interactive": "npm:@socketregistry/is-interactive@^1",
+    "is-unicode-supported": "npm:@socketregistry/is-unicode-supported@^1"
+  },
+  "main": "src/index.html",
+  "name": "10print",
+  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4",
+  "scripts": {
+    "build": "vite build",
+    "deploy": "pnpm run build && wrangler pages deploy",
+    "dev": "vite",
+    "preview": "wrangler pages dev"
+  },
+  "type": "module"
+}

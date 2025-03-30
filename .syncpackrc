@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/syncpack/dist/schema.json",
+  "dependencyTypes": ["dev", "prod"],
+  "semverGroups": [
+    {
+      "label": "use caret ranges",
+      "range": "^"
+    }
+  ]
+}
