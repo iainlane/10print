@@ -96,25 +96,33 @@ export function ControlPanel({
           </Button>
         </div>
       </div>
-      <SheetFooter className="border-t grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-        <Label className="text-sm text-muted-foreground">Appearance</Label>
-        <ThemeSelector className="w-full" />
-        <Separator className="col-span-full" />
-        <p className="text-sm text-muted-foreground">
-          Made by{" "}
+      <SheetFooter className="grid gap-4">
+        <Separator />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          <Label className="text-sm text-muted-foreground">Appearance</Label>
+          <ThemeSelector className="w-full" />
+        </div>
+
+        <Separator />
+
+        <div className="grid grid-cols-2">
+          <p className="text-sm text-muted-foreground">
+            Made by{" "}
+            <a
+              href="https://orangesquash.org.uk/~laney"
+              className="underline decoration-dashed decoration-accent-foreground"
+            >
+              <span className="font-mono">laney</span>
+            </a>
+          </p>
           <a
-            href="https://orangesquash.org.uk/~laney"
-            className="underline decoration-dashed decoration-accent-foreground"
+            href="https://github.com/iainlane/10print"
+            className="justify-self-end"
           >
-            <span className="font-mono">laney</span>
+            <FaGithub />
           </a>
-        </p>
-        <a
-          href="https://github.com/iainlane/10print"
-          className="justify-self-end"
-        >
-          <FaGithub />
-        </a>
+        </div>
       </SheetFooter>
     </SheetContent>
   );
