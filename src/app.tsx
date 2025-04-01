@@ -84,11 +84,7 @@ function Panels({ config, setConfig }: PanelsProps) {
 }
 
 export function App() {
-  const [config, setConfig] = usePersistentState<TenPrintConfig>(
-    STORAGE_KEY,
-    DEFAULT_CONFIG,
-    configSchema,
-  );
+  const [config, setConfig] = usePersistentState(STORAGE_KEY, configSchema);
 
   const regeneratePattern = useCallback(
     function () {
@@ -100,17 +96,11 @@ export function App() {
     [setConfig],
   );
 
-  const { gridSize, lineThickness, firstColour, secondColour } = config;
-
   return (
     <>
       <TenPrintSvg
         className="pointer-events-auto"
-        gridSize={gridSize}
-        seed={config.seed}
-        lineThickness={lineThickness}
-        firstColour={firstColour}
-        secondColour={secondColour}
+        {...config}
         onRegenerate={regeneratePattern}
       />
 

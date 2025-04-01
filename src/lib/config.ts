@@ -1,17 +1,6 @@
 import { z } from "zod";
 
-// Zod schema for validating configuration
-export const configSchema = z.object({
-  gridSize: z.number().int().min(10).max(100),
-  lineThickness: z.number().int().min(1).max(5),
-  firstColour: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i),
-  secondColour: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i),
-  seed: z.number(),
-});
-
-export type TenPrintConfig = z.infer<typeof configSchema>;
-
-export const DEFAULT_CONFIG: TenPrintConfig = {
+export const DEFAULT_CONFIG = {
   gridSize: 20,
   lineThickness: 2,
   firstColour: "#3B82F6", // Blue
@@ -19,7 +8,40 @@ export const DEFAULT_CONFIG: TenPrintConfig = {
   seed: Math.random(),
 };
 
-export const themeSchema = z.enum(["light", "dark", "auto"] as const);
+export const configSchemaBase = z.object({
+  gridSize: z.coerce
+    .number()
+    .int()
+    .min(10)
+    .max(100)
+    .default(DEFAULT_CONFIG.gridSize),
+  lineThickness: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(5)
+    .default(DEFAULT_CONFIG.lineThickness),
+  firstColour: z
+    .string()
+    .regex(/^#([0-9A-F]{3}){1,2}$/i)
+    .default(DEFAULT_CONFIG.firstColour),
+  secondColour: z
+    .string()
+    .regex(/^#([0-9A-F]{3}){1,2}$/i)
+    .default(DEFAULT_CONFIG.secondColour),
+  seed: z.coerce.number().default(Math.random),
+});
+
+export const configSchema = z.preprocess(
+  (param) => param ?? {},
+  configSchemaBase,
+);
+
+export type TenPrintConfig = z.infer<typeof configSchema>;
+
+export const themeSchema = z
+  .enum(["light", "dark", "auto"] as const)
+  .default("auto");
 
 export type ThemeMode = z.infer<typeof themeSchema>;
 

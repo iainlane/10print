@@ -1,36 +1,19 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
-export function usePersistentState<T>(
+export function usePersistentState<T, S extends z.ZodType<T>>(
   key: string,
-  defaultValue: T,
-  schema: z.ZodSchema<T>,
-): [z.infer<typeof schema>, React.Dispatch<React.SetStateAction<T>>] {
-  const [state, setState] = useState<T>(() => {
-    try {
-      const storedValue = localStorage.getItem(key);
-      if (storedValue === null) return defaultValue;
-
-      const parsed: unknown = JSON.parse(storedValue);
-
-      const { success, data, error } = schema.safeParse(parsed);
-      if (!success) {
-        console.warn(
-          `Invalid data for key "${key}" in localStorage. Using default.`,
-          error,
-        );
-
-        // Clear invalid data
-        localStorage.removeItem(key);
-
-        return defaultValue;
-      }
-
-      return data;
-    } catch (error) {
-      console.error(`Error reading localStorage key "${key}":`, error);
-      return defaultValue;
+  schema: S,
+): [z.infer<S>, React.Dispatch<React.SetStateAction<z.infer<S>>>] {
+  const [state, setState] = useState<z.infer<S>>(() => {
+    const storedValue = localStorage.getItem(key);
+    if (storedValue === null) {
+      return schema.parse(undefined);
     }
+
+    const parsed: unknown = JSON.parse(storedValue);
+
+    return schema.parse(parsed);
   });
 
   useEffect(() => {

@@ -23,7 +23,7 @@ export default tseslint.config(
     rules: {
       "@stylistic/block-spacing": ["error", "always"],
       "@stylistic/object-curly-spacing": ["error", "always"],
-      "@stylistic/quotes": ["error", "double"],
+      "@stylistic/quotes": ["error", "double", { avoidEscape: true }],
 
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -58,14 +58,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: [
-      "src/*/coverage/",
-      "_dist/",
-      "node_modules/",
-      "src/backend/worker-configuration.d.ts",
-      // This has its own eslint config
-      "src/frontend/",
-      "src/gen/",
-    ],
+    ignores: ["dist/", "node_modules/", "src/*/coverage/", "src/components/*"],
   },
 );

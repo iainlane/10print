@@ -33,7 +33,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Use persistent state to store theme preference
   const [themeMode, setThemeMode] = usePersistentState(
     THEME_STORAGE_KEY,
-    "auto",
     themeSchema,
   );
 
