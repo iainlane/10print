@@ -54,7 +54,7 @@
     "wrangler": "4.6.0"
   },
   "engines": {
-    "node": "23.2.0"
+    "node": "23.11.0"
   },
   "overrides": {
     "is-interactive": "npm:@socketregistry/is-interactive@^1",
