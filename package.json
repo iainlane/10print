@@ -16,7 +16,7 @@
     "jsdom": "^26.0.0",
     "jsx-runtime": "link:hono/jsx/dom/jsx-runtime",
     "linkedom": "^0.18.9",
-    "lucide-react": "^0.486.0",
+    "lucide-react": "^0.487.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
