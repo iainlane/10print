@@ -25,12 +25,49 @@ allowing customisation of various parameters.
 - **Custom Colours**: Set your own colour scheme for forward and backward diagonals
 - **Persistent Settings**: Preferences are saved between sessions
 
+## Add as a background on any webpage.
+
+The joy of 10 PRINT can be experienced on any webpage. Simply add
+
+```html
+<script type="module" src="https://10print.xyz/background-body.js" />
+```
+
+...inside the `<head>`, and we will set a background on your `<body>` element.
+
+Other elements can be given a background too, and custom parameters used, like:
+
+```html
+<script type="module">
+  import { TENPRINT } from "https://10print.xyz/background-element.js";
+
+  const svg = document.getElementById("svg");
+
+  if (svg === null) {
+    throw new Error("Couldn't find rotato");
+  }
+
+  TENPRINT(svg, {
+    firstColour: "#E7AF18",
+    secondColour: "#ECBF46",
+  });
+</script>
+```
+
+This will set the background of the element with id `svg` to a 10 PRINT SVG with
+the given colours. See [the demo][demo] ([code]) for a live example.
+
+[code]: ./demo.html
+[the demo]: https://10print.xyz/demo
+
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js] (v18 or newer)
-- [pnpm][pnpm] package manager (v9 or newer)
+_See <./package.json> for canonical dependency requirements._
+
+- [Node.js]
+- [pnpm][pnpm] package manager
 
 [Node.js]: https://nodejs.org/
 [pnpm]: https://pnpm.io/
@@ -38,17 +75,20 @@ allowing customisation of various parameters.
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/iainlane/10print.git
    cd 10print
    ```
 
 2. Install dependencies
+
    ```bash
    pnpm install
    ```
 
 3. Start the development server
+
    ```bash
    pnpm run dev
    ```

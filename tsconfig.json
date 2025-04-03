@@ -6,11 +6,8 @@
     "checkJs": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "esnext"
-    ],
+    "inlineSources": true,
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
@@ -19,30 +16,17 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "pretty": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
     "target": "esnext",
-    "types": [
-      "vite/client"
-    ]
+    "types": ["vite/client"]
   },
-  "exclude": [
-    "dist",
-    "node_modules",
-  ],
-  "include": [
-    "eslint.config.mjs",
-    "functions/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "vite.config.ts",
-    "vitest.config.ts"
-  ],
+  "exclude": ["dist", "node_modules"],
+  "include": ["eslint.config.mjs", "**/*.ts", "**/*.tsx"]
 }

@@ -22,7 +22,7 @@ function createMockContext<Env, P extends string, Data>(
   return mockContext;
 }
 
-const BASE_URL = "http://localhost/api/svg";
+const BASE_URL = "http://localhost/svg";
 
 describe("SVG API Endpoint (onRequestGet)", () => {
   const defaults = configSchema.parse({});

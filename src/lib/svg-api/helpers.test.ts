@@ -12,7 +12,7 @@ import {
   svgQuerySchema,
 } from "./helpers";
 
-const BASE_URL = "http://localhost/api/svg";
+const BASE_URL = "http://localhost/svg";
 
 describe("SVG API Helpers", () => {
   describe("parseAndValidateQueryParameters", () => {
@@ -22,7 +22,7 @@ describe("SVG API Helpers", () => {
       const url = new URL(
         `${BASE_URL}?width=200&height=100&gridSize=15&firstColour=%23ff0000`,
       );
-      const params = await parseAndValidateQueryParameters(url);
+      const params = await parseAndValidateQueryParameters(url.searchParams);
       expect(params.width).toBe(200);
       expect(params.height).toBe(100);
       expect(params.gridSize).toBe(15);
@@ -32,8 +32,8 @@ describe("SVG API Helpers", () => {
     });
 
     it("should use default values for missing optional parameters", async () => {
-      const url = new URL(`${BASE_URL}?width=50&height=50`);
-      const params = await parseAndValidateQueryParameters(url);
+      const { searchParams } = new URL(`${BASE_URL}?width=50&height=50`);
+      const params = await parseAndValidateQueryParameters(searchParams);
       expect(params.width).toBe(50);
       expect(params.height).toBe(50);
       expect(params.gridSize).toBe(defaults.gridSize);
@@ -63,16 +63,16 @@ describe("SVG API Helpers", () => {
     it.each(invalidParamCases)(
       "should reject request with $name",
       async ({ query }) => {
-        const url = new URL(`${BASE_URL}${query}`);
-        await expect(parseAndValidateQueryParameters(url)).rejects.toThrow(
-          ZodError,
-        );
+        const { searchParams } = new URL(`${BASE_URL}${query}`);
+        await expect(
+          parseAndValidateQueryParameters(searchParams),
+        ).rejects.toThrow(ZodError);
       },
     );
 
     it("should parse parameters provided as strings", async () => {
       const url = new URL(`${BASE_URL}?width=300&height=150&gridSize=25`);
-      const params = await parseAndValidateQueryParameters(url);
+      const params = await parseAndValidateQueryParameters(url.searchParams);
       expect(params.width).toBe(300);
       expect(params.height).toBe(150);
       expect(params.gridSize).toBe(25);

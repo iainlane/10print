@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { parseHTML } from "linkedom";
 import { ZodError } from "zod";
 
-import { type ProcessedSvgRequest, processSvgRequest } from "@/lib/svg-api";
+import { type ProcessedSvgRequest, processSvgRequestUrl } from "@/lib/svg-api";
 import { generateTenPrintGroupContent } from "@/lib/tenprint";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -14,6 +14,10 @@ const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
 // incorrect user input. Other errors return INTERNAL_SERVER_ERROR (500)
 // as these are unexpected errors.
 
+/**
+ * Response class for user errors, such as invalid input. Returns the raw error
+ * in the body, as JSON, and a 400 Bad Request error response code.
+ */
 class ZodErrorResponse extends Response {
   constructor(message: string, errors: ZodError) {
     super(JSON.stringify({ message, errors: errors.flatten() }, null, 2), {
@@ -23,6 +27,11 @@ class ZodErrorResponse extends Response {
   }
 }
 
+/**
+ * Response class for unexpected errors which are the server's fault/responsibility.
+ * Returns the supplied message in the body, as plain text, and a 500 Internal
+ * Server Error response code.
+ */
 class InternalServerError extends Response {
   constructor(message: string) {
     super(message, {
@@ -32,6 +41,38 @@ class InternalServerError extends Response {
   }
 }
 
+/**
+ * Handle a `HEAD` request. The request URL is processed. If the URL is a
+ * redirect, the redirect response is returned. Otherwise, a response with no
+ * body is returned.
+ *
+ * @param context The event context
+ *
+ * @returns A `HEAD` response indicating whether a redirect is needed.
+ */
+export async function onRequestHead<Env, P extends string, Data>(
+  context: EventContext<Env, P, Data>,
+) {
+  const url = new URL(context.request.url);
+  const processedRequest = await processSvgRequestUrl(url);
+
+  if (processedRequest.type === "redirect") {
+    return processedRequest.response;
+  }
+
+  return new Response(null);
+}
+
+/**
+ * Handle a `GET` request. The request URL is processed. If the URL is a
+ * redirect, the redirect response is returned. Otherwise, the SVG content is
+ * generated and returned.
+ *
+ * @param context The event context
+ *
+ * @returns A `GET` response either redirecting to a canonical location or
+ *          containing the SVG content.
+ */
 export async function onRequestGet<Env, P extends string, Data>(
   context: EventContext<Env, P, Data>,
 ) {
@@ -39,7 +80,7 @@ export async function onRequestGet<Env, P extends string, Data>(
 
   let processedRequest: ProcessedSvgRequest;
   try {
-    processedRequest = await processSvgRequest(url);
+    processedRequest = await processSvgRequestUrl(url);
   } catch (error) {
     if (error instanceof ZodError) {
       return new ZodErrorResponse("Invalid query parameters", error);

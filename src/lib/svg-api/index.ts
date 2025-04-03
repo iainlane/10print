@@ -1,5 +1,7 @@
 export {
   type NormalisedRequest as ProcessedSvgRequest,
-  processSvgRequest,
+  processSvgRequestUrl,
   type SvgQueryParams,
+  svgQuerySchema,
+  widthHeightSchema,
 } from "./helpers";

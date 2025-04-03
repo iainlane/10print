@@ -1,19 +1,33 @@
 import { StatusCodes } from "http-status-codes";
-import { URL } from "url";
 import { z } from "zod";
 
 import { configSchemaBase } from "@/lib/config";
 
 /**
- * Extend the base schema (which has defaults) to add width/height parameters
- * and makes the seed optional by providing a default value.
+ * Schema for width and height parameters.
+ *
+ * @see {@link configSchemaBase}
  */
-export const svgQuerySchema = configSchemaBase.extend({
-  width: z.coerce.number().int().positive(),
-  height: z.coerce.number().int().positive(),
+export const widthHeightSchema = z.object({
+  width: z.coerce.number().positive(),
+  height: z.coerce.number().positive(),
 });
 
+export type WidthHeight = z.infer<typeof widthHeightSchema>;
+
 export type SvgQueryParams = z.infer<typeof svgQuerySchema>;
+
+/**
+ * Extend the base schema (which has defaults) to add width/height parameters.
+ */
+export const svgQuerySchema = configSchemaBase.extend(widthHeightSchema.shape);
+
+/**
+ * Configuration for the TENPRINT function, with every field optional. Use this
+ * when handling a typed object in an API and all missing fields should be
+ * filled with defaults.
+ */
+export type PartialConfig = Partial<z.infer<typeof svgQuerySchema>>;
 
 /**
  * Parse and validate the query parameters from the URL.
@@ -23,15 +37,39 @@ export type SvgQueryParams = z.infer<typeof svgQuerySchema>;
  *          parameters
  */
 export async function parseAndValidateQueryParameters(
-  url: URL,
+  searchParams: URLSearchParams,
 ): Promise<SvgQueryParams> {
-  const params = Object.fromEntries(url.searchParams.entries());
+  const params = Object.fromEntries(searchParams.entries());
+
   // parseAsync applies defaults defined in the schema
   return await svgQuerySchema.parseAsync(params);
 }
 
 /**
- * Normalise the URL by adding all final parameters and sorting them.
+ * Concert the SVG paramaters to URL search parameters. Each parameter is
+ * converted to a string and then sorted by key.
+ *
+ * @see {@link normaliseUrlAndRedirect} for an explanation of the URL
+ *      canonicalisation process.
+ *
+ * @param params The SVG parameters to convert
+ * @returns The URLSearchParams object
+ */
+export function toUrlSearchParams(params: PartialConfig): URLSearchParams {
+  const canonicalParams = new URLSearchParams();
+
+  Object.entries(params)
+    .map(([key, value]) => [key, value.toString()])
+    .sort(([a], [b]) => (a as string).localeCompare(b as string))
+    .forEach(([key, value]) => {
+      canonicalParams.set(key as string, value as string);
+    });
+
+  return canonicalParams;
+}
+
+/**
+ * Normalise the URL by adding all parameters and sorting them.
  *
  * This function takes a URL and its validated parameters, creates a canonical
  * version by sorting the parameters, and redirects if the original URL is not
@@ -54,15 +92,7 @@ export function normaliseUrlAndRedirect(
   originalUrl: URL,
   finalParams: SvgQueryParams,
 ): Response | null {
-  const canonicalParams = new URLSearchParams();
-
-  // Convert all values to string and sort the parameters
-  Object.entries(finalParams)
-    .map(([key, value]) => [key, value.toString()])
-    .sort(([a], [b]) => (a as string).localeCompare(b as string))
-    .forEach(([key, value]) => {
-      canonicalParams.set(key as string, value as string);
-    });
+  const canonicalParams = toUrlSearchParams(finalParams);
 
   const canonicalUrl = new URL(originalUrl.pathname, originalUrl.origin);
   canonicalUrl.search = canonicalParams.toString();
@@ -74,6 +104,8 @@ export function normaliseUrlAndRedirect(
   if (originalUrlString === canonicalUrlString) {
     return null;
   }
+
+  // URLs differ, so we need to redirect
 
   // Determine redirect type:
   // 301 (Permanent) if all keys were present, just needed reordering/formatting.
@@ -87,10 +119,6 @@ export function normaliseUrlAndRedirect(
   const redirectStatus = allKeysPresent ? MOVED_PERMANENTLY : MOVED_TEMPORARILY;
 
   const cacheMaxAge = allKeysPresent ? 3600 : 60;
-
-  console.log(
-    `Redirecting: ${redirectStatus.toString()} from ${originalUrlString} to ${canonicalUrlString}`,
-  );
 
   return new Response(null, {
     status: redirectStatus,
@@ -121,12 +149,12 @@ export type NormalisedRequest =
  *          validated parameters.
  * @throws {ZodError} If the query parameters fail validation.
  */
-export async function processSvgRequest(
-  requestUrl: URL,
+export async function processSvgRequestUrl(
+  url: URL,
 ): Promise<NormalisedRequest> {
-  const finalParams = await parseAndValidateQueryParameters(requestUrl);
+  const finalParams = await parseAndValidateQueryParameters(url.searchParams);
 
-  const redirectResponse = normaliseUrlAndRedirect(requestUrl, finalParams);
+  const redirectResponse = normaliseUrlAndRedirect(url, finalParams);
 
   if (redirectResponse) {
     return { type: "redirect", response: redirectResponse };

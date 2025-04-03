@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>10PRINT demo</title>
+    <link href="./demo.css" rel="stylesheet" />
+    <script type="module" src="./background-body.ts"></script>
+    <script type="module">
+      import { TENPRINT } from "./background-element.ts";
+
+      const svg = document.getElementById("rotatoImage");
+
+      if (svg === null) {
+        throw new Error("Couldn't find rotato");
+      }
+
+      TENPRINT(svg, {
+        gridSize: 50,
+        firstColour: "#E7AF18",
+        secondColour: "#ECBF46",
+      });
+    </script>
+  </head>
+  <body class="flex h-screen w-screen justify-center align-middle">
+    <svg
+      id="rotato"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid meet"
+      class="aspect-square h-auto w-[90vmin] animate-[spin_10s_linear_infinite] fill-current"
+    >
+      <circle
+        id="textCircle"
+        cx="50"
+        cy="50"
+        r="45"
+        class="fill-orange-50 stroke-gray-100 opacity-50"
+      />
+      <defs>
+        <clipPath id="circleClip">
+          <use href="#textCircle" />
+        </clipPath>
+
+        <path
+          id="textCirclePath"
+          d="M 5,50 A 45,45 0 1 1 95,50 A 45,45 0 1 1 5,50"
+          fill="none"
+          stroke="none"
+        />
+
+        <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="currentcolor" class="text-indigo-500" />
+          <stop
+            offset="50%"
+            stop-color="currentcolor"
+            class="text-purple-500"
+          />
+          <stop offset="100%" stop-color="currentcolor" class="text-pink-500" />
+        </linearGradient>
+      </defs>
+
+      <foreignObject width="100" height="100" clip-path="url(#circleClip)">
+        <div id="rotatoImage" class="h-full w-full"></div>
+      </foreignObject>
+
+      <text
+        dominant-baseline="hanging"
+        class="font-mono text-xl"
+        fill="url(#textGradient)"
+      >
+        <textPath
+          id="textPath"
+          href="#textCirclePath"
+          startOffset="0%"
+          textLength="250%"
+          lengthAdjust="spacing"
+          side="right"
+        >
+          why hello there
+        </textPath>
+      </text>
+    </svg>
+  </body>
+</html>

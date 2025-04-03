@@ -13,4 +13,25 @@ export default defineConfig({
       "@": src,
     },
   },
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      input: {
+        background: path.resolve(__dirname, "background-element.ts"),
+        backgroundbody: path.resolve(__dirname, "background-body.ts"),
+        demo: path.resolve(__dirname, "demo.html"),
+        main: path.resolve(__dirname, "index.html"),
+      },
+      output: {
+        entryFileNames: function (chunkInfo) {
+          const filenameMap: Record<string, string> = {
+            background: "background.js",
+            backgroundbody: "background-body.js",
+          };
+
+          return filenameMap[chunkInfo.name] ?? "assets/[name]-[hash].js";
+        },
+      },
+    },
+  },
 });

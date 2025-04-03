@@ -1,6 +1,9 @@
 # prod
 dist/
 
+# we build a .ts file into a .js so we can serve it statically
+static/background-generator.js
+
 # dev
 .yarn/
 !.yarn/releases
