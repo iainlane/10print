@@ -158,8 +158,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1(@types/node@22.14.0)(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)
       vitest-mock-extended:
-        specifier: 3.0.1
-        version: 3.0.1(typescript@5.8.2)(vitest@3.1.1(@types/node@22.14.0)(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2))
+        specifier: 3.1.0
+        version: 3.1.0(typescript@5.8.2)(vitest@3.1.1(@types/node@22.14.0)(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2))
       wrangler:
         specifier: 4.7.2
         version: 4.7.2(@cloudflare/workers-types@4.20250405.0)
@@ -2969,8 +2969,8 @@ packages:
       yaml:
         optional: true
 
-  vitest-mock-extended@3.0.1:
-    resolution: {integrity: sha512-VI7CRRvIi+MbAsqdGTxp3K+eiY7BR1zrVflZ5DBrFUXPjRZRgxXajlYdNyIu3v1bb5ZfdLANXwZ9i/RfVMfS6A==}
+  vitest-mock-extended@3.1.0:
+    resolution: {integrity: sha512-vCM0VkuocOUBwwqwV7JB7YStw07pqeKvEIrZnR8l3PtwYi6rAAJAyJACeC1UYNfbQWi85nz7EdiXWBFI5hll2g==}
     peerDependencies:
       typescript: 3.x || 4.x || 5.x
       vitest: '>=3.0.0'
@@ -5698,7 +5698,7 @@ snapshots:
       jiti: 2.4.2
       lightningcss: 1.29.2
 
-  vitest-mock-extended@3.0.1(typescript@5.8.2)(vitest@3.1.1(@types/node@22.14.0)(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)):
+  vitest-mock-extended@3.1.0(typescript@5.8.2)(vitest@3.1.1(@types/node@22.14.0)(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.2)):
     dependencies:
       ts-essentials: 10.0.4(typescript@5.8.2)
       typescript: 5.8.2
