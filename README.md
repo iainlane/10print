@@ -29,8 +29,10 @@ allowing customisation of various parameters.
 
 ### Prerequisites
 
-- [Node.js] (v18 or newer)
-- [pnpm][pnpm] package manager (v9 or newer)
+_See <./package.json> for canonical dependency requirements._
+
+- [Node.js]
+- [pnpm][pnpm] package manager
 
 [Node.js]: https://nodejs.org/
 [pnpm]: https://pnpm.io/
@@ -38,17 +40,20 @@ allowing customisation of various parameters.
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/iainlane/10print.git
    cd 10print
    ```
 
 2. Install dependencies
+
    ```bash
    pnpm install
    ```
 
 3. Start the development server
+
    ```bash
    pnpm run dev
    ```

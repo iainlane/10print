@@ -32,6 +32,19 @@ class InternalServerError extends Response {
   }
 }
 
+export async function onRequestHead<Env, P extends string, Data>(
+  context: EventContext<Env, P, Data>,
+) {
+  const url = new URL(context.request.url);
+  const processedRequest = await processSvgRequest(url);
+
+  if (processedRequest.type === "redirect") {
+    return processedRequest.response;
+  }
+
+  return new Response(null);
+}
+
 export async function onRequestGet<Env, P extends string, Data>(
   context: EventContext<Env, P, Data>,
 ) {
