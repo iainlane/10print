@@ -67,7 +67,7 @@ export function ControlPanel({
           onChange={onLineThicknessChange}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <ColourInput
             id="firstColour"
             label="First Colour"
@@ -84,11 +84,11 @@ export function ControlPanel({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Button className="w-full block truncate" onClick={onRegenerate}>
+          <Button className="block w-full truncate" onClick={onRegenerate}>
             Regenerate
           </Button>
           <Button
-            className="w-full block truncate"
+            className="block w-full truncate"
             onClick={onReset}
             variant="outline"
           >
@@ -100,18 +100,18 @@ export function ControlPanel({
         <Separator />
 
         <div className="grid grid-cols-1 sm:grid-cols-2">
-          <Label className="text-sm text-muted-foreground">Appearance</Label>
+          <Label className="text-muted-foreground text-sm">Appearance</Label>
           <ThemeSelector className="w-full" />
         </div>
 
         <Separator />
 
         <div className="grid grid-cols-2">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Made by{" "}
             <a
               href="https://orangesquash.org.uk/~laney"
-              className="underline decoration-dashed decoration-accent-foreground"
+              className="decoration-accent-foreground underline decoration-dashed"
             >
               <span className="font-mono">laney</span>
             </a>

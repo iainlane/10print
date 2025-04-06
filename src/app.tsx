@@ -110,7 +110,7 @@ export function App() {
             <Button
               variant="outline"
               size="icon"
-              className="bg-accent dark:bg-accent opacity-75 dark:hover:bg-accent hover:opacity-100 transition-opacity duration-300 ease-in-out"
+              className="bg-accent dark:bg-accent dark:hover:bg-accent opacity-75 transition-opacity duration-300 ease-in-out hover:opacity-100"
             >
               <Menu className="h-5 w-5" aria-label="Open Controls" />
             </Button>

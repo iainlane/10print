@@ -3,8 +3,6 @@
   "name": "10print",
   "compatibility_date": "2025-03-29",
   "pages_build_output_dir": "./dist",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
-  "upload_source_maps": true
+  "compatibility_flags": ["nodejs_compat"],
+  "upload_source_maps": true,
 }

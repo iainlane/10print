@@ -29,9 +29,9 @@ export function RangeInput({
 
   return (
     <div className="space-y-2">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <Label htmlFor={id}>{label}</Label>
-        <span className="text-sm text-muted-foreground">{value}</span>
+        <span className="text-muted-foreground text-sm">{value}</span>
       </div>
       <Slider
         id={id}

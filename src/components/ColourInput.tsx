@@ -19,7 +19,7 @@ export function ColourInput({ id, label, value, onChange }: ColorInputProps) {
       <Label htmlFor={id}>{label}</Label>
       <div className="flex items-center gap-2">
         <div
-          className="w-6 h-6 rounded-md border shrink-0"
+          className="h-6 w-6 shrink-0 rounded-md border"
           style={{ backgroundColor: value }}
           aria-label={`Current colour: ${value}`}
         />
@@ -28,7 +28,7 @@ export function ColourInput({ id, label, value, onChange }: ColorInputProps) {
           id={id}
           value={value}
           onChange={handleInputChange}
-          className="w-full h-8 p-0 border-none rounded cursor-pointer bg-transparent"
+          className="h-8 w-full cursor-pointer rounded border-none bg-transparent p-0"
         />
       </div>
     </div>

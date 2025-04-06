@@ -16,7 +16,7 @@ export function InfoPanel({ className }: InfoPanelProps) {
             The "10 PRINT" algorithm is a one-line BASIC program for the
             Commodore 64:
           </p>
-          <pre className="p-2 my-2 rounded prose-code text-xs overflow-auto">
+          <pre className="prose-code my-2 overflow-auto rounded p-2 text-xs">
             10 PRINT CHR$(205.5+RND(1)); : GOTO 10
           </pre>
           <p>

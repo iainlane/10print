@@ -48,7 +48,7 @@ function TenPrintSvgComponent({
     <svg
       ref={svgRef}
       className={cn(
-        "fixed top-0 left-0 w-full h-full z-0 cursor-pointer bg-background",
+        "bg-background fixed top-0 left-0 z-0 h-full w-full cursor-pointer",
         className,
       )}
       width={width}
