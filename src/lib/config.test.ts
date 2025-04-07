@@ -82,6 +82,41 @@ describe("config.ts", () => {
       expect(error?.errors[0]?.path).toEqual([path]);
     });
 
+    it.each([
+      ["#123456"],
+      ["hotpink"],
+      ["rgb(255, 0, 0)"],
+      ["hsl(0, 100%, 50%)"],
+      ["rgba(255, 0, 0, 0.5)"],
+      ["hsla(0, 100%, 50%, 0.5)"],
+    ])("should accept valid CSS colours: %s", (colour) => {
+      const result = configSchema.safeParse({
+        ...DEFAULT_CONFIG,
+        firstColour: colour,
+        secondColour: colour,
+      });
+
+      expect(result.error).toBeUndefined();
+      expect(result.data).toEqual({
+        ...DEFAULT_CONFIG,
+        firstColour: colour,
+        secondColour: colour,
+      });
+    });
+
+    it.each([["#12345"], ["foo(1 2 3)"], ["invalid"]])(
+      "should reject invalid CSS colours: %s",
+      (colour) => {
+        const result = configSchema.safeParse({
+          ...DEFAULT_CONFIG,
+          firstColour: colour,
+          secondColour: colour,
+        });
+
+        expect(result.error).toBeInstanceOf(z.ZodError);
+      },
+    );
+
     it("should accept undefined within the object fields", () => {
       const result = configSchema.safeParse({
         ...DEFAULT_CONFIG,

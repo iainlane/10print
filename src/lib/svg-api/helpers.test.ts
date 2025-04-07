@@ -16,7 +16,7 @@ const BASE_URL = "http://localhost/svg";
 
 describe("SVG API Helpers", () => {
   describe("parseAndValidateQueryParameters", () => {
-    const defaults = configSchema.parse({}); // Get default config values
+    const defaults = configSchema.parse({});
 
     it("should parse valid parameters correctly", async () => {
       const url = new URL(
@@ -56,7 +56,7 @@ describe("SVG API Helpers", () => {
       { name: "negative height", query: "?width=100&height=-50" },
       {
         name: "invalid colour format",
-        query: "?width=100&height=100&firstColour=red",
+        query: "?width=100&height=100&firstColour=invalid",
       },
     ];
 
@@ -71,11 +71,21 @@ describe("SVG API Helpers", () => {
     );
 
     it("should parse parameters provided as strings", async () => {
-      const url = new URL(`${BASE_URL}?width=300&height=150&gridSize=25`);
+      const url = new URL(
+        `${BASE_URL}?width=300&height=150&gridSize=25&firstColour=hotpink`,
+      );
+
+      const expectedParms = {
+        ...DEFAULT_CONFIG,
+        width: 300,
+        height: 150,
+        gridSize: 25,
+        firstColour: "hotpink",
+        seed: expect.any(Number) as number,
+      };
+
       const params = await parseAndValidateQueryParameters(url.searchParams);
-      expect(params.width).toBe(300);
-      expect(params.height).toBe(150);
-      expect(params.gridSize).toBe(25);
+      expect(params).toEqual(expectedParms);
     });
   });
 

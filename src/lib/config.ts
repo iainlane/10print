@@ -1,4 +1,32 @@
+import { lexer, parse } from "css-tree";
 import { z } from "zod";
+
+/**
+ * Check if a string is a valid CSS colour.
+ *
+ * Uses `csstree` to do the heavy lifting.
+ *
+ * @param val The string to check.
+ * @returns `true` if the string is a valid CSS colour, `false` otherwise.
+ */
+function validateColour(colorValue: string): boolean {
+  // Try to parse the value as a CSS property value
+  const ast = parse(colorValue, {
+    context: "value",
+  });
+
+  if (ast.type !== "Value") {
+    return false;
+  }
+
+  const matchResult = lexer.matchProperty("color", ast);
+
+  if (matchResult.error !== null) {
+    return false;
+  }
+
+  return true;
+}
 
 /**
  * Default configuration values, used if not provided in the request.
@@ -32,12 +60,12 @@ export const configSchemaBase = z.object({
     .default(DEFAULT_CONFIG.lineThickness),
   firstColour: z
     .string()
-    .regex(/^#([0-9A-F]{3}){1,2}$/i)
-    .default(DEFAULT_CONFIG.firstColour),
+    .default(DEFAULT_CONFIG.firstColour)
+    .refine(validateColour, "Invalid colour"),
   secondColour: z
     .string()
-    .regex(/^#([0-9A-F]{3}){1,2}$/i)
-    .default(DEFAULT_CONFIG.secondColour),
+    .default(DEFAULT_CONFIG.secondColour)
+    .refine(validateColour, "Invalid colour"),
   seed: z.coerce.number().default(Math.random),
 });
 
