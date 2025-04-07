@@ -58,6 +58,12 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["dist/", "node_modules/", "src/*/coverage/", "src/components/*"],
+    ignores: [
+      ".wrangler/",
+      "dist/",
+      "node_modules/",
+      "src/*/coverage/",
+      "src/components/*",
+    ],
   },
 );

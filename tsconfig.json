@@ -27,6 +27,6 @@
     "target": "esnext",
     "types": ["vite/client"]
   },
-  "exclude": ["dist", "node_modules"],
-  "include": ["eslint.config.mjs", "**/*.ts", "**/*.tsx"]
+  "exclude": [".wrangler", "dist", "node_modules"],
+  "include": ["**/*.ts", "**/*.tsx", "eslint.config.mjs", "stylelint.config.js"]
 }

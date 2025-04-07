@@ -14,7 +14,6 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
     rollupOptions: {
       input: {
         backgroundbody: path.resolve(__dirname, "background-body.ts"),
@@ -34,5 +33,6 @@ export default defineConfig({
         minifyInternalExports: false,
       },
     },
+    sourcemap: true,
   },
 });
