@@ -31,6 +31,7 @@ export default defineConfig({
 
           return filenameMap[chunkInfo.name] ?? "assets/[name]-[hash].js";
         },
+        minifyInternalExports: false,
       },
     },
   },
