@@ -1,3 +1,5 @@
+// @ts-check
+
 export default {
   extends: ["stylelint-config-recommended", "stylelint-config-tailwindcss"],
   rules: {

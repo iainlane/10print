@@ -15,11 +15,17 @@
         throw new Error("Couldn't find rotato");
       }
 
-      TENPRINT(svg, {
-        gridSize: 50,
-        firstColour: "#E7AF18",
-        secondColour: "#ECBF46",
-      });
+      TENPRINT(
+        svg,
+        {
+          gridSize: 50,
+          firstColour: "#E7AF18",
+          secondColour: "#ECBF46",
+        },
+        {
+          saveSeed: "svg-element-seed",
+        },
+      );
     </script>
   </head>
   <body class="flex h-screen w-screen justify-center align-middle">

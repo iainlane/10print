@@ -29,7 +29,7 @@ function getViewportDimensions(): WidthHeight {
 /**
  * Initialise the background and set up event listeners
  */
-function initialise(): void {
+async function initialise(): Promise<void> {
   const dimensions = getViewportDimensions();
 
   const params: PartialConfig = {
@@ -37,16 +37,18 @@ function initialise(): void {
     height: dimensions.height,
   };
 
-  TENPRINT(document.body, params);
+  await TENPRINT(document.body, params);
 }
 
-function run(): void {
+async function run(): Promise<void> {
   if (document.readyState !== "loading") {
-    initialise();
+    await initialise();
     return;
   }
 
-  document.addEventListener("DOMContentLoaded", initialise, { once: true });
+  document.addEventListener("DOMContentLoaded", () => void initialise(), {
+    once: true,
+  });
 }
 
-run();
+void run();
