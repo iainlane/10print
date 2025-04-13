@@ -61,8 +61,23 @@ const LOCAL_STORAGE_KEY = "background-seed";
 /**
  * Saves seed to localStorage
  */
-export function saveSeed(seed: number): void {
-  localStorage.setItem(LOCAL_STORAGE_KEY, seed.toString());
+export function saveSeed(
+  seed: string,
+  key: string = LOCAL_STORAGE_KEY,
+): number | undefined {
+  const parsedSeed = parseFloat(seed);
+
+  if (Number.isNaN(parsedSeed)) {
+    console.warn(
+      `Tried to save invalid seed "${seed}" to localStorage, ignring.`,
+    );
+
+    return undefined;
+  }
+
+  localStorage.setItem(key, seed.toString());
+
+  return parsedSeed;
 }
 
 /**
@@ -71,18 +86,20 @@ export function saveSeed(seed: number): void {
  *
  * @returns The parsed seed, or null if there is no seed or it's invalid,
  */
-export function getSavedSeed(): number | undefined {
-  const savedSeed = localStorage.getItem(LOCAL_STORAGE_KEY);
+export function getSavedSeed(
+  key: string = LOCAL_STORAGE_KEY,
+): number | undefined {
+  const savedSeed = localStorage.getItem(key);
 
   if (savedSeed === null) {
     return undefined;
   }
 
-  const parsedSeed = parseInt(savedSeed, 10);
+  const parsedSeed = parseFloat(savedSeed);
 
   if (Number.isNaN(parsedSeed)) {
     console.warn(`Invalid seed "${savedSeed}" found in localStorage, removing`);
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(key);
   }
 
   return parsedSeed;
@@ -121,26 +138,21 @@ export function svgToDataUrl(svgText: string): string {
  * @param element The element to set the background image on
  * @param url The URL to fetch the SVG from
  */
-function setImage(element: HTMLElement, url: string): void {
-  fetch(url)
-    .then((response) => {
-      const contentType = response.headers.get("content-type");
+async function setImage(element: HTMLElement, url: string): Promise<Response> {
+  const response = await fetch(url);
+  const contentType = response.headers.get("content-type");
 
-      if (contentType !== "image/svg+xml") {
-        throw new Error(
-          `Expected content type "image/svg+xml", got "${contentType ?? "unknown"}"`,
-        );
-      }
+  if (contentType !== "image/svg+xml") {
+    throw new Error(
+      `Expected content type "image/svg+xml", got "${contentType ?? "unknown"}"`,
+    );
+  }
 
-      return response.text();
-    })
-    .then((svgText) => {
-      const dataUrl = svgToDataUrl(svgText);
-      element.style.backgroundImage = `url('${dataUrl}')`;
-    })
-    .catch((error: unknown) => {
-      console.error("Error setting background image", error);
-    });
+  const svgText = await response.text();
+  const dataUrl = svgToDataUrl(svgText);
+  element.style.backgroundImage = `url('${dataUrl}')`;
+
+  return response;
 }
 
 /**
@@ -152,10 +164,11 @@ interface TENPRINTOptions {
    * a new seed will be generated each time the SVG is updated.
    *
    * If `true`, the seed will be saved to localStorage when the SVG is updated.
+   * Can also be a string, which will set the localStorage key to use.
    *
    * @default false
    */
-  saveSeed?: boolean;
+  saveSeed?: boolean | string;
 
   /**
    * Whether to observe the element's resize and update the background image
@@ -176,15 +189,17 @@ interface TENPRINTOptions {
  * @param element The element to set the background image on
  * @param options The options for the TENPRINT function
  */
-export function TENPRINT(
+export async function TENPRINT(
   element: HTMLElement,
   params: PartialConfig = {},
-  { saveSeed = true, observeResize = true }: TENPRINTOptions = {},
-): void {
+  { saveSeed: save = true, observeResize = true }: TENPRINTOptions = {},
+): Promise<void> {
   let { width, height, seed } = params;
 
-  if (saveSeed && seed === undefined) {
-    seed = getSavedSeed() ?? undefined;
+  const seedKey = typeof save === "string" ? save : LOCAL_STORAGE_KEY;
+
+  if (save && seed === undefined) {
+    seed = getSavedSeed(seedKey) ?? undefined;
   }
 
   // Use the element's dimensions if not provided
@@ -207,17 +222,28 @@ export function TENPRINT(
 
   const url = buildImageUrl(API_BASE_URL, parsedParams);
 
-  function update() {
-    setImage(element, url);
+  async function update() {
+    return await setImage(element, url);
   }
 
-  update();
+  const response = await update();
+
+  console.log(response.url);
+
+  if (save) {
+    const url = new URL(response.url);
+    const seed = url.searchParams.get("seed");
+
+    if (seed !== null) {
+      saveSeed(seed, seedKey);
+    }
+  }
 
   if (!observeResize) {
     return;
   }
 
   const debouncedUpdate = debounce(update, DEBOUNCE_MS);
-  const resizeObserver = new ResizeObserver(debouncedUpdate);
+  const resizeObserver = new ResizeObserver(() => void debouncedUpdate());
   resizeObserver.observe(element);
 }
