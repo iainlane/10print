@@ -1,3 +1,5 @@
+// @ts-check
+
 import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import prettierConfig from "eslint-config-prettier";
@@ -44,7 +46,9 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.node,
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["*.js", "*.mjs"],
+        },
       },
     },
     linterOptions: {
