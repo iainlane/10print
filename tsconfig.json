@@ -28,5 +28,5 @@
     "types": ["vite/client"]
   },
   "exclude": [".wrangler", "dist", "node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "eslint.config.mjs", "stylelint.config.js"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
