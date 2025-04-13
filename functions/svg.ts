@@ -1,7 +1,7 @@
 import type { EventContext } from "@cloudflare/workers-types";
 import { StatusCodes } from "http-status-codes";
 import { parseHTML } from "linkedom";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 
 import { type ProcessedSvgRequest, processSvgRequestUrl } from "@/lib/svg-api";
 import { generateTenPrintGroupContent } from "@/lib/tenprint";
@@ -20,10 +20,13 @@ const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
  */
 class ZodErrorResponse extends Response {
   constructor(message: string, errors: ZodError) {
-    super(JSON.stringify({ message, errors: errors.flatten() }, null, 2), {
-      status: BAD_REQUEST,
-      headers: { "content-type": "application/json" },
-    });
+    super(
+      JSON.stringify({ message, errors: z.prettifyError(errors) }, null, 2),
+      {
+        status: BAD_REQUEST,
+        headers: { "content-type": "application/json" },
+      },
+    );
   }
 }
 
