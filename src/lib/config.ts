@@ -48,13 +48,14 @@ export const DEFAULT_CONFIG = {
 export const configSchemaBase = z.object({
   gridSize: z.coerce
     .number()
-    .int()
+    // this is silly, but there is no coerce method for integers
+    .multipleOf(1)
     .min(10)
     .max(100)
     .default(DEFAULT_CONFIG.gridSize),
   lineThickness: z.coerce
     .number()
-    .int()
+    .multipleOf(1)
     .min(1)
     .max(5)
     .default(DEFAULT_CONFIG.lineThickness),

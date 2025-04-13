@@ -55,6 +55,7 @@ describe("config.ts", () => {
     it.each([
       // Invalid gridSize
       [{ gridSize: 5 }, "gridSize"],
+      [{ gridSize: 5.5 }, "gridSize"],
       [{ gridSize: 101 }, "gridSize"],
       [{ gridSize: "abc" }, "gridSize"],
       // Invalid lineThickness
@@ -78,8 +79,8 @@ describe("config.ts", () => {
 
       expect(success).toBe(false);
       expect(error).toBeInstanceOf(z.ZodError);
-      expect(error?.errors).toHaveLength(1);
-      expect(error?.errors[0]?.path).toEqual([path]);
+      const errorTree = z.treeifyError(error!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      expect(Object.keys(errorTree.properties ?? {})).toEqual([path]);
     });
 
     it.each([
