@@ -22,7 +22,7 @@
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.3",
     "tw-animate-css": "^1.2.5",
-    "zod": "4.0.0-beta.20250418T073619"
+    "zod": "4.0.0-beta.20250418T202744"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250418.0",
