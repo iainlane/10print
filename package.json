@@ -25,7 +25,7 @@
     "zod": "4.0.0-beta.20250424T163858"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250425.0",
+    "@cloudflare/workers-types": "4.20250426.0",
     "@eslint/js": "9.25.1",
     "@stylistic/eslint-plugin": "4.2.0",
     "@tailwindcss/typography": "0.5.16",
