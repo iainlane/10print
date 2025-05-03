@@ -173,8 +173,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(typescript@5.8.3)(vitest@3.1.2(@types/node@22.15.3)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2))
       wrangler:
-        specifier: 4.14.0
-        version: 4.14.0(@cloudflare/workers-types@4.20250503.0)
+        specifier: 4.14.1
+        version: 4.14.1(@cloudflare/workers-types@4.20250503.0)
 
 packages:
 
@@ -1698,10 +1698,6 @@ packages:
   defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
 
-  detect-libc@2.0.3:
-    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
-    engines: {node: '>=8'}
-
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
     engines: {node: '>=8'}
@@ -2342,8 +2338,8 @@ packages:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
 
-  miniflare@4.20250428.0:
-    resolution: {integrity: sha512-3kKJNcdh5zUSXoFD3kGSRWc+ETZS36O7ygkCJJF/bwN7lxcB5mOXq+2DPqV/nVyu2DGLDAqsAvjXhpPKCHuPOQ==}
+  miniflare@4.20250428.1:
+    resolution: {integrity: sha512-M3qcJXjeAEimHrEeWXEhrJiC3YHB5M3QSqqK67pOTI+lHn0QyVG/2iFUjVJ/nv+i10uxeAEva8GRGeu+tKRCmQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -3118,10 +3114,9 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@4.14.0:
-    resolution: {integrity: sha512-WhypgOBEYuUMo/ZFw8MgZ0wtyE7EmDanytjD8Me+OMm62raKU9V9DZTlF1UVLkNfilfQNlRbMnFRdzSBji/MEA==}
+  wrangler@4.14.1:
+    resolution: {integrity: sha512-EU7IThP7i68TBftJJSveogvWZ5k/WRijcJh3UclDWiWWhDZTPbL6LOJEFhHKqFzHOaC4Y2Aewt48rfTz0e7oCw==}
     engines: {node: '>=18.0.0'}
-    deprecated: Workers with configured tail consumers would sometimes prevent wrangler dev from running. Downgrade to 4.13.2 to workaround this issue
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20250428.0
@@ -4571,9 +4566,6 @@ snapshots:
 
   defu@6.1.4: {}
 
-  detect-libc@2.0.3:
-    optional: true
-
   detect-libc@2.0.4: {}
 
   detect-node-es@1.1.0: {}
@@ -5206,7 +5198,7 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  miniflare@4.20250428.0:
+  miniflare@4.20250428.1:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       acorn: 8.14.0
@@ -5497,7 +5489,7 @@ snapshots:
   sharp@0.33.5:
     dependencies:
       color: 4.2.3
-      detect-libc: 2.0.3
+      detect-libc: 2.0.4
       semver: 7.7.1
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.33.5
@@ -5956,13 +5948,13 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250428.0
       '@cloudflare/workerd-windows-64': 1.20250428.0
 
-  wrangler@4.14.0(@cloudflare/workers-types@4.20250503.0):
+  wrangler@4.14.1(@cloudflare/workers-types@4.20250503.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.3.1(unenv@2.0.0-rc.15)(workerd@1.20250428.0)
       blake3-wasm: 2.1.5
       esbuild: 0.25.2
-      miniflare: 4.20250428.0
+      miniflare: 4.20250428.1
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.15
       workerd: 1.20250428.0
