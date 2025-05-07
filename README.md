@@ -1,10 +1,12 @@
 # 10 PRINT SVG Generator
 
-[An implementation of the classic Commodore 64 BASIC algorithm][10print].
+[An implementation][10print] of the [classic Commodore 64 BASIC
+algorithm][10print-original].
 
 ![Screenshot of 10 PRINT SVG Generator](./screencast.gif)
 
-[10print]: https://10print.org/
+[10print]: https://10print.xyz/
+[10print-original]: https://10print.org/
 
 ## About
 
@@ -25,7 +27,7 @@ allowing customisation of various parameters.
 - **Custom Colours**: Set your own colour scheme for forward and backward diagonals
 - **Persistent Settings**: Preferences are saved between sessions
 
-## Add as a background on any webpage.
+## Add as a background on any webpage
 
 The joy of 10 PRINT can be experienced on any webpage. Simply add
 
@@ -55,7 +57,7 @@ Other elements can be given a background too, and custom parameters used, like:
 ```
 
 This will set the background of the element with id `svg` to a 10 PRINT SVG with
-the given colours. See [the demo][demo] ([code]) for a live example.
+the given colours. See [the demo] ([code]) for a live example.
 
 [code]: ./demo.html
 [the demo]: https://10print.xyz/demo
@@ -93,7 +95,7 @@ _See <./package.json> for canonical dependency requirements._
    pnpm run dev
    ```
 
-4. Open your browser to the URL shown in the terminal (typically http://localhost:5173)
+4. Open your browser to the URL shown in the terminal (typically `http://localhost:5173`)
 
 ## Deployment
 
@@ -127,5 +129,7 @@ This project is available as open source under the terms of the AGPL-3.0.
 
 ## Acknowledgements
 
-- Inspired by the book [10 PRINT CHR$(205.5+RND(1)); : GOTO 10](https://10print.org/)
-- Built by [`laney`](https://orangesquash.org.uk/~laney)
+- Inspired by the book [10 PRINT CHR$(205.5+RND(1)); : GOTO 10][10print-original]
+- Built by [`laney`]
+
+[`laney`]: https://orangesquash.org.uk/~laney
