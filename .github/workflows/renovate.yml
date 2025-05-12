@@ -48,7 +48,7 @@ jobs:
           app-id: ${{ secrets.LANEYBOT_APP_ID }}
           private-key: ${{ secrets.LANEYBOT_PRIVATE_KEY }}
 
-      - name: Self-hosted Renovate what
+      - name: Self-hosted Renovate
         uses: renovatebot/github-action@f5c3383cb7cbf7711d8b66b809375b2d5f4e2d1d # v42.0.2
         with:
           configurationFile: .github/renovate-config.json5
