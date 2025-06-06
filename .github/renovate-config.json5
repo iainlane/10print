@@ -14,32 +14,24 @@
     },
   ],
   forkProcessing: "enabled",
-  globalExtends: ["config:best-practices"],
-  lockFileMaintenance: {
-    enabled: true,
-    automerge: true,
-  },
+  globalExtends: [
+    "config:best-practices",
+    "group:allNonMajor",
+    ":automergeMinor",
+    ":enableVulnerabilityAlertsWithLabel(automerge-security-update)",
+    ":maintainLockFilesWeekly",
+  ],
   onboarding: false,
   osvVulnerabilityAlerts: true,
+  schedule: ["before 2am on every day"],
   packageRules: [
     {
       labels: ["update-major"],
       matchUpdateTypes: ["major"],
     },
     {
-      labels: ["automerge", "update-minor"],
-      matchUpdateTypes: ["minor"],
-      automerge: true,
-    },
-    {
-      labels: ["automerge", "update-patch"],
-      matchUpdateTypes: ["patch"],
-      automerge: true,
-    },
-    {
       labels: ["update-digest"],
       matchUpdateTypes: ["digest"],
-      automerge: true,
     },
     {
       // Run the custom matcher on early Monday mornings (UTC)
@@ -50,8 +42,4 @@
   platformCommit: "enabled",
   rebaseWhen: "behind-base-branch",
   requireConfig: "optional",
-  vulnerabilityAlerts: {
-    enabled: true,
-    labels: ["automerge-security-update"],
-  },
 }
