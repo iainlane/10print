@@ -55,7 +55,7 @@
     "vite": "6.3.5",
     "vitest": "3.2.3",
     "vitest-mock-extended": "3.1.0",
-    "wrangler": "4.20.0"
+    "wrangler": "4.20.1"
   },
   "engines": {
     "node": "23.11.1"
