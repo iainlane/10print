@@ -75,7 +75,7 @@ export function saveSeed(
     return undefined;
   }
 
-  localStorage.setItem(key, seed.toString());
+  localStorage.setItem(key, seed);
 
   return parsedSeed;
 }
