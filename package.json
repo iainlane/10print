@@ -25,7 +25,7 @@
     "zod": "4.0.17"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250812.0",
+    "@cloudflare/workers-types": "4.20250813.0",
     "@eslint/js": "9.33.0",
     "@stylistic/eslint-plugin": "5.2.3",
     "@tailwindcss/typography": "0.5.16",
@@ -55,7 +55,7 @@
     "vite": "7.1.2",
     "vitest": "3.2.4",
     "vitest-mock-extended": "3.1.0",
-    "wrangler": "4.28.1"
+    "wrangler": "4.29.0"
   },
   "engines": {
     "node": "23.11.1"
