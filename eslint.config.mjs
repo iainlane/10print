@@ -10,7 +10,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */
-export default tseslint.config(
+export default [
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   prettierConfig,
@@ -70,4 +70,4 @@ export default tseslint.config(
       "src/components/*",
     ],
   },
-);
+];
