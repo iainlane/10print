@@ -113,7 +113,7 @@ importers:
         specifier: 19.1.9
         version: 19.1.9(@types/react@19.1.12)
       '@typescript-eslint/utils':
-        specifier: ^8.42.0
+        specifier: 8.42.0
         version: 8.42.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2)
       '@vitejs/plugin-react':
         specifier: 5.0.2
@@ -161,7 +161,7 @@ importers:
         specifier: 13.0.4
         version: 13.0.4(typescript@5.9.2)
       typescript-eslint:
-        specifier: ^8.42.0
+        specifier: 8.42.0
         version: 8.42.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2)
       vite:
         specifier: 7.1.4
