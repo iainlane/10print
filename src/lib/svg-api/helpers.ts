@@ -112,9 +112,7 @@ export function normaliseUrlAndRedirect(
   // 302 (Temporary) if keys were missing (defaults applied).
   const originalKeys = new Set(originalUrl.searchParams.keys());
   const canonicalKeys = new Set(Object.keys(finalParams));
-  const allKeysPresent = [...canonicalKeys].every((key) =>
-    originalKeys.has(key),
-  );
+  const allKeysPresent = originalKeys.isSupersetOf(canonicalKeys);
 
   const { MOVED_PERMANENTLY, MOVED_TEMPORARILY } = StatusCodes;
 
