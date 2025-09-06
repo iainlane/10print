@@ -7,6 +7,7 @@ import {
   STORAGE_KEY,
   THEME_STORAGE_KEY,
   themeSchema,
+  validateAndConvertColour,
 } from "./config";
 
 describe("config.ts", () => {
@@ -28,8 +29,14 @@ describe("config.ts", () => {
       };
       const result = configSchema.safeParse(validConfig);
 
+      const expectedParsedConfig = {
+        ...validConfig,
+        firstColour: { mode: "rgb", r: 1, g: 0, b: 0 },
+        secondColour: { mode: "rgb", r: 0, g: 1, b: 0 },
+      };
+
       expect(result.success).toBe(true);
-      expect(result.data).toEqual(validConfig);
+      expect(result.data).toEqual(expectedParsedConfig);
     });
 
     it("should use default values for undefined fields", () => {
@@ -98,10 +105,13 @@ describe("config.ts", () => {
       });
 
       expect(result.error).toBeUndefined();
+
+      const parsedColour = validateAndConvertColour(colour);
+
       expect(result.data).toEqual({
         ...DEFAULT_CONFIG,
-        firstColour: colour,
-        secondColour: colour,
+        firstColour: parsedColour,
+        secondColour: parsedColour,
       });
     });
 

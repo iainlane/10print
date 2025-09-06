@@ -1,4 +1,5 @@
 import { TenPrintConfig } from "@/lib/config";
+import { valueToString } from "@/lib/svg-api/helpers";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -78,7 +79,9 @@ export function generateTenPrintGroupContent(
       line.setAttribute("y2", y2.toString());
       line.setAttribute(
         "stroke",
-        isForwardDiagonal ? firstColour : secondColour,
+        isForwardDiagonal
+          ? valueToString(firstColour)
+          : valueToString(secondColour),
       );
 
       if (isForwardDiagonal) {

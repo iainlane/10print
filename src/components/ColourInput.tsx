@@ -1,34 +1,39 @@
-import React from "react";
-
+import { Color, formatCss, formatHex, parse } from "culori";
+import React, { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 
-interface ColorInputProps {
+interface ColourInputProps {
   id: string;
   label: string;
-  value: string;
-  onChange: (value: string) => void;
+  value: Color;
+  onChange: (value: Color) => void;
 }
 
-export function ColourInput({ id, label, value, onChange }: ColorInputProps) {
+export function ColourInput({ id, label, value, onChange }: ColourInputProps) {
+  const hexValue = useMemo(() => formatHex(value), [value]);
+  const cssValue = useMemo(() => formatCss(value), [value]);
+
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    onChange(event.target.value);
+    const parsed = parse(event.target.value);
+    if (parsed === undefined) return;
+    onChange(parsed);
   }
 
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
-      <div className="flex items-center gap-2">
-        <div
-          className="h-6 w-6 shrink-0 rounded-md border"
-          style={{ backgroundColor: value }}
-          aria-label={`Current colour: ${value}`}
-        />
+      <div
+        className="relative h-10 w-full overflow-hidden rounded-md border border-neutral-300/80 dark:border-neutral-700"
+        style={{ background: cssValue }}
+      >
         <input
           type="color"
           id={id}
-          value={value}
+          value={hexValue}
           onChange={handleInputChange}
-          className="h-8 w-full cursor-pointer rounded border-none bg-transparent p-0"
+          aria-label={`${label}: ${cssValue}`}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0 focus:opacity-100 focus:outline-none"
+          title={cssValue}
         />
       </div>
     </div>

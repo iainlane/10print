@@ -1,3 +1,4 @@
+import { type Color, formatCss, formatHex, formatHex8 } from "culori";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 
@@ -46,7 +47,33 @@ export async function parseAndValidateQueryParameters(
 }
 
 /**
- * Concert the SVG paramaters to URL search parameters. Each parameter is
+ * Convert a parameter value to its URL string representation for URL encoding
+ *
+ * @param value The value to convert
+ * @returns The string representation of the value
+ */
+export function valueToString(value: string | number | Color): string {
+  if (typeof value === "number") {
+    return value.toString();
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (value.mode === "rgb") {
+    if (value.alpha === undefined || value.alpha >= 1) {
+      return formatHex(value).toUpperCase();
+    }
+
+    return formatHex8(value).toUpperCase();
+  }
+
+  return formatCss(value);
+}
+
+/**
+ * Convert the SVG paramaters to URL search parameters. Each parameter is
  * converted to a string and then sorted by key.
  *
  * @see {@link normaliseUrlAndRedirect} for an explanation of the URL
@@ -59,7 +86,7 @@ export function toUrlSearchParams(params: PartialConfig): URLSearchParams {
   const canonicalParams = new URLSearchParams();
 
   Object.entries(params)
-    .map(([key, value]) => [key, value.toString()])
+    .map(([key, value]) => [key, valueToString(value)])
     .sort(([a], [b]) => (a as string).localeCompare(b as string))
     .forEach(([key, value]) => {
       canonicalParams.set(key as string, value as string);

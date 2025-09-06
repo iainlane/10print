@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mock } from "vitest-mock-extended";
 
 import { configSchema } from "@/lib/config";
+import { valueToString } from "@/lib/svg-api/helpers";
 import * as tenprint from "@/lib/tenprint";
 
 import { onRequestGet } from "./svg";
@@ -35,7 +36,7 @@ describe("SVG API Endpoint (onRequestGet)", () => {
     const params = { ...defaults, width: 100, height: 100, ...overrides };
 
     const sorted = Object.entries(params)
-      .map(([key, value]) => [key, value.toString()])
+      .map(([key, value]) => [key, valueToString(value)])
       .sort(([a], [b]) => (a as string).localeCompare(b as string));
 
     return new URLSearchParams(sorted).toString();

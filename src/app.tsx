@@ -1,3 +1,4 @@
+import { Color, parse as parseColour } from "culori";
 import { Menu } from "lucide-react";
 import { useCallback } from "react";
 
@@ -6,8 +7,13 @@ import { TenPrintSvg } from "@/components/TenPrintSvg";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { usePersistentState } from "@/hooks/usePersistentState";
-import { DEFAULT_CONFIG, STORAGE_KEY } from "@/lib/config";
-import { configSchema, TenPrintConfig } from "@/lib/config";
+import {
+  configSchema,
+  DEFAULT_CONFIG,
+  STORAGE_KEY,
+  TenPrintConfig,
+} from "@/lib/config";
+import { randomBackgroundColours } from "@/lib/randomBackgroundColours";
 
 interface PanelsProps {
   config: TenPrintConfig;
@@ -33,14 +39,14 @@ function Panels({ config, setConfig }: PanelsProps) {
   );
 
   const handleFirstColourChange = useCallback(
-    function (value: string) {
+    function (value: Color) {
       setConfig((prevConfig) => ({ ...prevConfig, firstColour: value }));
     },
     [setConfig],
   );
 
   const handleSecondColourChange = useCallback(
-    function (value: string) {
+    function (value: Color) {
       setConfig((prevConfig) => ({ ...prevConfig, secondColour: value }));
     },
     [setConfig],
@@ -51,6 +57,25 @@ function Panels({ config, setConfig }: PanelsProps) {
       setConfig((prevConfig) => ({
         ...prevConfig,
         seed: Math.random(),
+      }));
+    },
+    [setConfig],
+  );
+
+  const randomiseColours = useCallback(
+    function () {
+      const computedStyle = getComputedStyle(document.body);
+      const bgColorString = computedStyle.backgroundColor;
+
+      const background = parseColour(bgColorString);
+
+      const colours = randomBackgroundColours({
+        background,
+      });
+
+      setConfig((prevConfig) => ({
+        ...prevConfig,
+        ...colours,
       }));
     },
     [setConfig],
@@ -77,6 +102,7 @@ function Panels({ config, setConfig }: PanelsProps) {
       onLineThicknessChange={handleLineThicknessChange}
       onFirstColourChange={handleFirstColourChange}
       onSecondColourChange={handleSecondColourChange}
+      onRandomiseColours={randomiseColours}
       onRegenerate={regeneratePattern}
       onReset={resetConfig}
     />

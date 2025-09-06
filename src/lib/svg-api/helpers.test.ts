@@ -1,3 +1,4 @@
+import { parse } from "culori";
 import { StatusCodes } from "http-status-codes";
 import { URL } from "url";
 import { describe, expect, it } from "vitest";
@@ -10,6 +11,7 @@ import {
   parseAndValidateQueryParameters,
   type SvgQueryParams,
   svgQuerySchema,
+  valueToString,
 } from "./helpers";
 
 const BASE_URL = "http://localhost/svg";
@@ -26,7 +28,12 @@ describe("SVG API Helpers", () => {
       expect(params.width).toBe(200);
       expect(params.height).toBe(100);
       expect(params.gridSize).toBe(15);
-      expect(params.firstColour).toBe("#ff0000");
+      expect(params.firstColour).toStrictEqual({
+        mode: "rgb",
+        r: 1,
+        g: 0,
+        b: 0,
+      });
       // Check a default value is still present
       expect(params.secondColour).toBe(defaults.secondColour);
     });
@@ -75,12 +82,16 @@ describe("SVG API Helpers", () => {
         `${BASE_URL}?width=300&height=150&gridSize=25&firstColour=hotpink`,
       );
 
+      // We don't care what the specific representation is, just that it is hot
+      // pink!
+      const culoriHotPink = parse("hotpink");
+
       const expectedParms = {
         ...DEFAULT_CONFIG,
         width: 300,
         height: 150,
         gridSize: 25,
-        firstColour: "hotpink",
+        firstColour: culoriHotPink,
         seed: expect.any(Number) as number,
       };
 
@@ -91,21 +102,21 @@ describe("SVG API Helpers", () => {
 
   describe("normalizeUrlAndRedirect", () => {
     const defaults = DEFAULT_CONFIG;
-    const baseParams: Record<string, string | number> = {
+    const baseParams = {
       width: 100,
       height: 100,
       ...DEFAULT_CONFIG,
     };
 
     const sortedParamEntries = Object.entries(baseParams)
-      .map(([key, value]) => [key, value.toString()])
+      .map(([key, value]) => [key, valueToString(value)])
       .sort(([a], [b]) => (a as string).localeCompare(b as string));
     const canonicalQuery = new URLSearchParams(sortedParamEntries).toString();
 
     // Helper function to generate canonical URL string from params within a test
     const generateExpectedUrl = (params: SvgQueryParams): string => {
       const sorted = Object.entries(params)
-        .map(([key, value]): [string, string] => [key, String(value)])
+        .map(([key, value]): [string, string] => [key, valueToString(value)])
         .sort(([a], [b]) => a.localeCompare(b));
       const query = new URLSearchParams(sorted).toString();
       return `${BASE_URL}?${query}`;
@@ -124,7 +135,7 @@ describe("SVG API Helpers", () => {
     it("should return 301 for a URL needing parameter reordering", () => {
       // Same params as canonical, but different order
       const url = new URL(
-        `${BASE_URL}?height=100&width=100&seed=${defaults.seed.toString()}&gridSize=${defaults.gridSize.toString()}&firstColour=${encodeURIComponent(defaults.firstColour)}&secondColour=${encodeURIComponent(defaults.secondColour)}&lineThickness=${defaults.lineThickness.toString()}`,
+        `${BASE_URL}?height=100&width=100&seed=${defaults.seed.toString()}&gridSize=${defaults.gridSize.toString()}&firstColour=${encodeURIComponent(valueToString(defaults.firstColour))}&secondColour=${encodeURIComponent(valueToString(defaults.secondColour))}&lineThickness=${defaults.lineThickness.toString()}`,
       );
       const finalParams = svgQuerySchema.parse(
         Object.fromEntries(url.searchParams),

@@ -1,32 +1,127 @@
 import { lexer, parse } from "css-tree";
+import {
+  type Color,
+  modeHsl,
+  modeOklch,
+  modeP3,
+  modeRgb,
+  parse as parseColour,
+  useMode,
+} from "culori/fn";
 import { z } from "zod";
 
 /**
- * Check if a string is a valid CSS colour.
+ * Register only the colour spaces we actually use.
+ * - rgb: common input/output
+ * - p3: wide‑gamut inputs and gamut checks
+ * - oklch: perceptual working space and validation target
+ */
+useMode(modeRgb);
+useMode(modeP3);
+useMode(modeOklch);
+useMode(modeHsl);
+
+/**
+ * Check if a string is a valid CSS colour and parse it with culori.
  *
- * Uses `csstree` to do the heavy lifting.
+ * Uses `csstree` for validation and `culori` for conversion.
  *
  * @param val The string to check.
- * @returns `true` if the string is a valid CSS colour, `false` otherwise.
+ * @returns The colour object if valid, or null if invalid.
  */
-function validateColour(colorValue: string): boolean {
-  // Try to parse the value as a CSS property value
+export function validateAndConvertColour(colorValue: string): Color | null {
+  // First validate with csstree
   const ast = parse(colorValue, {
     context: "value",
   });
 
   if (ast.type !== "Value") {
-    return false;
+    return null;
   }
 
   const matchResult = lexer.matchProperty("color", ast);
 
   if (matchResult.error !== null) {
-    return false;
+    return null;
   }
 
-  return true;
+  // If valid, parse and convert with culori
+  const parsed = parseColour(colorValue);
+  if (parsed === undefined) {
+    return null;
+  }
+
+  return parsed;
 }
+
+/**
+ * Strict Zod schemas for supported culori Color objects.
+ * Alpha is optional and must be within [0, 1] when present.
+ */
+const alphaSchema = z.number().min(0).max(1).optional();
+
+const rgbSchema = z.object({
+  mode: z.literal("rgb"),
+  r: z.number(),
+  g: z.number(),
+  b: z.number(),
+  alpha: alphaSchema,
+});
+
+const p3Schema = z.object({
+  mode: z.literal("p3"),
+  r: z.number(),
+  g: z.number(),
+  b: z.number(),
+  alpha: alphaSchema,
+});
+
+const oklchSchema = z.object({
+  mode: z.literal("oklch"),
+  l: z.number(),
+  c: z.number(),
+  h: z.number(),
+  alpha: alphaSchema,
+});
+
+const hslSchema = z.object({
+  mode: z.literal("hsl"),
+  h: z.number(),
+  s: z.number(),
+  l: z.number(),
+  alpha: alphaSchema,
+});
+
+const supportedColorSchema = z.union([
+  hslSchema,
+  oklchSchema,
+  p3Schema,
+  rgbSchema,
+]);
+
+/**
+ * Custom Zod transform for colour strings or Color objects to Color objects.
+ */
+const colourTransform = z
+  .union([z.string(), supportedColorSchema])
+  .transform((val, ctx) => {
+    // If it's already a Color object, return as-is
+    if (typeof val === "object") {
+      return val;
+    }
+
+    // Otherwise it's a string, validate and convert
+    const converted = validateAndConvertColour(val);
+    if (converted === null) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Invalid colour",
+      });
+      return z.NEVER;
+    }
+
+    return converted;
+  });
 
 /**
  * Default configuration values, used if not provided in the request.
@@ -34,10 +129,10 @@ function validateColour(colorValue: string): boolean {
 export const DEFAULT_CONFIG = {
   gridSize: 20,
   lineThickness: 2,
-  firstColour: "#3B82F6", // Blue
-  secondColour: "#EC4899", // Pink
+  firstColour: { mode: "rgb", r: 0.23, g: 0.51, b: 0.965 }, // Blue (#3B82F6)
+  secondColour: { mode: "rgb", r: 0.925, g: 0.282, b: 0.6 }, // Pink (#EC4899)
   seed: Math.random(),
-};
+} as const;
 
 /**
  * Base schema for the configuration. Each field has a default value, so when
@@ -59,14 +154,8 @@ export const configSchemaBase = z.object({
     .min(1)
     .max(5)
     .default(DEFAULT_CONFIG.lineThickness),
-  firstColour: z
-    .string()
-    .default(DEFAULT_CONFIG.firstColour)
-    .refine(validateColour, "Invalid colour"),
-  secondColour: z
-    .string()
-    .default(DEFAULT_CONFIG.secondColour)
-    .refine(validateColour, "Invalid colour"),
+  firstColour: colourTransform.default(() => DEFAULT_CONFIG.firstColour),
+  secondColour: colourTransform.default(() => DEFAULT_CONFIG.secondColour),
   seed: z.coerce.number().default(Math.random),
 });
 
