@@ -1,8 +1,8 @@
-import { type Color, formatCss, formatHex, formatHex8 } from "culori";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 
 import { configSchemaBase } from "@/lib/config";
+import { type Color, formatCss, formatHex, formatHex8 } from "@/lib/culori";
 
 /**
  * Schema for width and height parameters.

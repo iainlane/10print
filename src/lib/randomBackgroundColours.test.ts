@@ -1,10 +1,9 @@
-import { inGamut, modeOklch, modeP3, type Oklch, useMode } from "culori/fn";
 import { describe, expect, it } from "vitest";
+
+import { inGamut, type Oklch, oklch } from "@/lib/culori";
 
 import { randomBackgroundColours } from "./randomBackgroundColours";
 
-const oklch = useMode(modeOklch);
-useMode(modeP3);
 const isInP3 = inGamut("p3");
 
 describe("randomBackgroundColours", () => {

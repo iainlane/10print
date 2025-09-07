@@ -1,25 +1,7 @@
 import { lexer, parse } from "css-tree";
-import {
-  type Color,
-  modeHsl,
-  modeOklch,
-  modeP3,
-  modeRgb,
-  parse as parseColour,
-  useMode,
-} from "culori/fn";
 import { z } from "zod";
 
-/**
- * Register only the colour spaces we actually use.
- * - rgb: common input/output
- * - p3: wide‑gamut inputs and gamut checks
- * - oklch: perceptual working space and validation target
- */
-useMode(modeRgb);
-useMode(modeP3);
-useMode(modeOklch);
-useMode(modeHsl);
+import { type Color, parse as parseColour } from "@/lib/culori";
 
 /**
  * Check if a string is a valid CSS colour and parse it with culori.

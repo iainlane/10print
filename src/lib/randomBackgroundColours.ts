@@ -1,22 +1,18 @@
+import seedrandom from "seedrandom";
+
 import {
   clampChroma,
   type Color,
   inGamut,
-  modeOklch,
-  modeP3,
   type Oklch,
-  useMode,
-} from "culori/fn";
-import seedrandom from "seedrandom";
+  oklch,
+} from "@/lib/culori";
 
 export interface Options {
   seed?: string | number;
   background?: Color;
 }
 
-// Register only the modes we use so bundlers can tree-shake the rest.
-const oklch = useMode(modeOklch);
-useMode(modeP3); // enable P3 gamut operations
 const isInP3 = inGamut("p3");
 
 /**

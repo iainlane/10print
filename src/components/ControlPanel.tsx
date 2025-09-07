@@ -25,7 +25,7 @@ import { TenPrintConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { RangeInput } from "./RangeInput";
 import { ThemeSelector } from "./ThemeSelector";
-import { Color } from "culori";
+import { Color } from "@/lib/culori";
 import React, { useId, useState } from "react";
 
 interface SectionProps {

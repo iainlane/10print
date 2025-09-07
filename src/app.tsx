@@ -1,4 +1,3 @@
-import { Color, parse as parseColour } from "culori";
 import { Menu } from "lucide-react";
 import { useCallback } from "react";
 
@@ -13,6 +12,7 @@ import {
   STORAGE_KEY,
   TenPrintConfig,
 } from "@/lib/config";
+import { Color, parse as parseColour } from "@/lib/culori";
 import { randomBackgroundColours } from "@/lib/randomBackgroundColours";
 
 interface PanelsProps {

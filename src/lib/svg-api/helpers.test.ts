@@ -1,10 +1,10 @@
-import { parse } from "culori";
 import { StatusCodes } from "http-status-codes";
 import { URL } from "url";
 import { describe, expect, it } from "vitest";
 import { ZodError } from "zod";
 
 import { configSchema, DEFAULT_CONFIG } from "@/lib/config";
+import { parse } from "@/lib/culori";
 
 import {
   normaliseUrlAndRedirect,

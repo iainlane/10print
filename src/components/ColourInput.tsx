@@ -1,4 +1,4 @@
-import { Color, formatCss, formatHex, parse } from "culori";
+import { Color, formatCss, formatHex, parse } from "@/lib/culori";
 import React, { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 

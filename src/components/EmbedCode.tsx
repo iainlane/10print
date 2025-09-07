@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { formatCss } from "culori/fn";
+import { formatCss } from "@/lib/culori";
 import { TenPrintConfig } from "@/lib/config";
 import { Fragment, useMemo } from "react";
 
