@@ -40,7 +40,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250906.0",
     "@eslint/js": "9.35.0",
-    "@shikijs/types": "^3.12.2",
+    "@shikijs/types": "3.12.2",
     "@stylistic/eslint-plugin": "5.3.1",
     "@tailwindcss/typography": "0.5.16",
     "@types/css-tree": "2.3.10",
