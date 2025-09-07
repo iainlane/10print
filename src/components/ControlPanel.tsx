@@ -1,10 +1,14 @@
 import { FaGithub } from "react-icons/fa";
 import { Shuffle } from "lucide-react";
+import { Slot } from "@radix-ui/react-slot";
 
 import { ColourInput } from "@/components/ColourInput";
+import { CopyButton } from "@/components/CopyButton";
+import { EmbedCode, generateEmbedCode } from "@/components/EmbedCode";
 import { InfoPanel } from "@/components/InfoPanel";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import {
   SheetContent,
   SheetDescription,
@@ -22,34 +26,38 @@ import { cn } from "@/lib/utils";
 import { RangeInput } from "./RangeInput";
 import { ThemeSelector } from "./ThemeSelector";
 import { Color } from "culori";
-import React, { useId } from "react";
+import React, { useId, useState } from "react";
 
 interface SectionProps {
   title: string;
   action?: React.ReactNode;
   className?: string;
+  asChild?: boolean;
 }
 
-/**
- * Section with a rounded border whose top border is neatly “notched”
- */
 function Section({
   title,
   action,
   className,
   children,
+  asChild = false,
 }: React.PropsWithChildren<SectionProps>) {
   const titleId = useId();
 
+  const Comp = asChild ? Slot : "div";
+
   return (
-    <section aria-labelledby={titleId} className={cn("space-y-4", className)}>
+    <section
+      aria-labelledby={titleId}
+      className={cn("min-w-0 space-y-4", className)}
+    >
       <div className="flex items-center justify-between border-b border-neutral-200 pb-2 dark:border-neutral-800">
-        <h3 id={titleId} className="text-sm font-medium">
+        <h3 id={titleId} className="font-medium">
           {title}
         </h3>
         {action}
       </div>
-      <div className="space-y-4">{children}</div>
+      <Comp>{children}</Comp>
     </section>
   );
 }
@@ -77,8 +85,9 @@ export function ControlPanel({
   onReset,
   onRandomiseColours,
 }: ControlPanelProps) {
+  const [includeSeed, setIncludeSeed] = useState(false);
   return (
-    <SheetContent className={cn("overflow-y-auto", className)}>
+    <SheetContent className={cn("overflow-y-auto text-sm", className)}>
       <SheetHeader>
         <InfoPanel />
         <SheetDescription>
@@ -147,6 +156,52 @@ export function ControlPanel({
           </div>
         </Section>
 
+        <Section
+          title="Embed"
+          action={
+            <CopyButton
+              text={generateEmbedCode(config, includeSeed)}
+              className="h-8 px-2"
+              tooltip="Copy embed code"
+            />
+          }
+        >
+          <details>
+            <summary className="text-muted-foreground cursor-pointer">
+              Show embed code
+            </summary>
+            <div className="space-y-4 p-4">
+              <p>
+                Add the code below to use this pattern as a background on any
+                HTML page. Change <code>document.body</code> to target any
+                element.
+              </p>
+              <p>
+                Include the seed to reproduce this exact pattern. If disabled, a
+                new random pattern will be generated for each user, and saved in
+                local storage.
+              </p>
+
+              <header
+                aria-labelledby="embed"
+                className="flex items-center gap-2 border-b border-neutral-200 pb-1 dark:border-neutral-800"
+              >
+                <h4 id="embed" className="mr-auto">
+                  Embed Code
+                </h4>
+                <Switch
+                  id="include-seed"
+                  checked={includeSeed}
+                  onCheckedChange={setIncludeSeed}
+                />
+                <label htmlFor="include-seed">Include seed</label>
+              </header>
+
+              <EmbedCode config={config} includeSeed={includeSeed} />
+            </div>
+          </details>
+        </Section>
+
         <Separator />
 
         <section aria-label="Actions">
@@ -172,7 +227,7 @@ export function ControlPanel({
           aria-labelledby="appearance-heading"
           className="grid grid-cols-1 items-center sm:grid-cols-2"
         >
-          <h3 id="appearance-heading" className="text-sm font-medium">
+          <h3 id="appearance-heading" className="font-medium">
             Appearance
           </h3>
           <ThemeSelector className="w-full" />
@@ -187,7 +242,7 @@ export function ControlPanel({
           <h3 id="about-heading" className="sr-only">
             About
           </h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground">
             Made by{" "}
             <a
               href="https://orangesquash.org.uk/~laney"

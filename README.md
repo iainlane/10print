@@ -59,6 +59,10 @@ Other elements can be given a background too, and custom parameters used, like:
 This will set the background of the element with id `svg` to a 10 PRINT SVG with
 the given colours. See [the demo] ([code]) for a live example.
 
+Adjust the colours to your heart's content on [the website][10print], and
+click the "copy" button to copy a code snippet for the current parameters to
+your clipboard.
+
 [code]: ./demo.html
 [the demo]: https://10print.xyz/demo
 
