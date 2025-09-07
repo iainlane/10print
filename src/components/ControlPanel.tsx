@@ -51,8 +51,8 @@ function Section({
       aria-labelledby={titleId}
       className={cn("min-w-0 space-y-4", className)}
     >
-      <div className="flex items-center justify-between border-b border-neutral-200 pb-2 dark:border-neutral-800">
-        <h3 id={titleId} className="font-medium">
+      <div className="border-border flex items-center justify-between border-b">
+        <h3 id={titleId} className="mb-1 font-medium">
           {title}
         </h3>
         {action}
