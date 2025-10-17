@@ -27,7 +27,7 @@
     "jsdom": "^27.0.0",
     "linkedom": "^0.18.9",
     "lodash.debounce": "^4.0.8",
-    "lucide-react": "^0.545.0",
+    "lucide-react": "^0.546.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
@@ -46,7 +46,7 @@
     "@types/css-tree": "2.3.11",
     "@types/jsdom": "27.0.0",
     "@types/lodash.debounce": "4.0.9",
-    "@types/node": "22.18.10",
+    "@types/node": "22.18.11",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/seedrandom": "3.0.8",
@@ -61,16 +61,16 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "16.4.0",
     "prettier": "3.6.2",
-    "prettier-plugin-tailwindcss": "0.6.14",
+    "prettier-plugin-tailwindcss": "0.7.0",
     "stylelint": "16.25.0",
     "stylelint-config-standard": "39.0.1",
     "stylelint-config-tailwindcss": "1.0.0",
     "syncpack": "13.0.4",
     "typescript-eslint": "8.46.1",
-    "vite": "7.1.9",
+    "vite": "7.1.10",
     "vitest": "3.2.4",
     "vitest-mock-extended": "3.1.0",
-    "wrangler": "4.42.2"
+    "wrangler": "4.43.0"
   },
   "engines": {
     "node": "23.11.1"
@@ -85,7 +85,7 @@
   },
   "main": "src/index.html",
   "name": "10print",
-  "packageManager": "pnpm@10.18.2+sha512.9fb969fa749b3ade6035e0f109f0b8a60b5d08a1a87fdf72e337da90dcc93336e2280ca4e44f2358a649b83c17959e9993e777c2080879f3801e6f0d999ad3dd",
+  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d",
   "scripts": {
     "build": "vite build",
     "deploy": "pnpm run build && wrangler pages deploy",
