@@ -53,7 +53,7 @@ jobs:
         with:
           configurationFile: .github/renovate-config.json5
           # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
-          renovate-version: 41.159.4@sha256:e0db6b8efa1479a9e7e2dc5e2c423bd0c059d90e37baf58b32cbadf3471de5bf
+          renovate-version: 41.161.0@sha256:9ffb756c9f734948345579645d029b6376205c846045f7155213f4d83d62b547
           token: ${{ steps.generate-token.outputs.token }}
         env:
           LOG_LEVEL: ${{ github.event_name == 'pull_request' && 'debug' || 'info' }}
