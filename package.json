@@ -52,7 +52,7 @@
     "@types/seedrandom": "3.0.8",
     "@typescript-eslint/utils": "8.46.2",
     "@vitejs/plugin-react": "5.1.0",
-    "@vitest/coverage-v8": "4.0.4",
+    "@vitest/coverage-v8": "4.0.5",
     "concurrently": "9.2.1",
     "eslint": "9.38.0",
     "eslint-config-prettier": "10.1.8",
@@ -68,9 +68,9 @@
     "syncpack": "13.0.4",
     "typescript-eslint": "8.46.2",
     "vite": "7.1.12",
-    "vitest": "4.0.4",
+    "vitest": "4.0.5",
     "vitest-mock-extended": "3.1.0",
-    "wrangler": "4.45.1"
+    "wrangler": "4.45.2"
   },
   "engines": {
     "node": "24.11.0"
