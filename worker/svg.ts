@@ -1,4 +1,4 @@
-import type { EventContext } from "@cloudflare/workers-types";
+import { type Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { parseHTML } from "linkedom";
 import { z, ZodError } from "zod";
@@ -8,11 +8,9 @@ import { generateTenPrintGroupContent } from "@/lib/tenprint";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = StatusCodes;
+const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NO_CONTENT } = StatusCodes;
 
-// Zod errors return error BAD_REQUEST (400) as these typically indicate
-// incorrect user input. Other errors return INTERNAL_SERVER_ERROR (500)
-// as these are unexpected errors.
+type WorkerContext = Context<{ Bindings: Env }>;
 
 /**
  * Response class for user errors, such as invalid input. Returns the raw error
@@ -48,15 +46,9 @@ class InternalServerError extends Response {
  * Handle a `HEAD` request. The request URL is processed. If the URL is a
  * redirect, the redirect response is returned. Otherwise, a response with no
  * body is returned.
- *
- * @param context The event context
- *
- * @returns A `HEAD` response indicating whether a redirect is needed.
  */
-export async function onRequestHead<Env, P extends string, Data>(
-  context: EventContext<Env, P, Data>,
-) {
-  const url = new URL(context.request.url);
+export async function onSvgHead(c: WorkerContext): Promise<Response> {
+  const url = new URL(c.req.raw.url);
   const processedRequest = await processSvgRequestUrl(url);
 
   if (processedRequest.type === "redirect") {
@@ -70,16 +62,9 @@ export async function onRequestHead<Env, P extends string, Data>(
  * Handle a `GET` request. The request URL is processed. If the URL is a
  * redirect, the redirect response is returned. Otherwise, the SVG content is
  * generated and returned.
- *
- * @param context The event context
- *
- * @returns A `GET` response either redirecting to a canonical location or
- *          containing the SVG content.
  */
-export async function onRequestGet<Env, P extends string, Data>(
-  context: EventContext<Env, P, Data>,
-) {
-  const url = new URL(context.request.url);
+export async function onSvgGet(c: WorkerContext): Promise<Response> {
+  const url = new URL(c.req.raw.url);
 
   let processedRequest: ProcessedSvgRequest;
   try {
@@ -95,13 +80,11 @@ export async function onRequestGet<Env, P extends string, Data>(
     );
   }
 
-  // Do we need to redirect to the canonical URL?
   if (processedRequest.type === "redirect") {
     return processedRequest.response;
   }
 
   const queryParams = processedRequest.params;
-
   const { width, height, ...configValues } = queryParams;
 
   try {
@@ -133,7 +116,13 @@ export async function onRequestGet<Env, P extends string, Data>(
     });
   } catch (error) {
     console.error("Error generating SVG:", error);
-
     return new InternalServerError("Error generating SVG");
   }
+}
+
+/**
+ * Handle preflight checks for `/svg`.
+ */
+export function onSvgOptions(): Response {
+  return new Response(null, { status: NO_CONTENT });
 }

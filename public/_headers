@@ -1,0 +1,5 @@
+/background-element.js
+  Access-Control-Allow-Origin: *
+
+/background-body.js
+  Access-Control-Allow-Origin: *

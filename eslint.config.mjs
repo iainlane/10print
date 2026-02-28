@@ -68,6 +68,7 @@ export default [
       "node_modules/",
       "src/*/coverage/",
       "src/components/*",
+      "worker-configuration.d.ts",
     ],
   },
 ];

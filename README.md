@@ -23,9 +23,9 @@ allowing customisation of various parameters.
 
 ## Features
 
-- **Interactive Controls**: Adjust grid size and line thickness
-- **Custom Colours**: Set your own colour scheme for forward and backward diagonals
-- **Persistent Settings**: Preferences are saved between sessions
+- Interactive Controls: Adjust grid size and line thickness
+- Custom Colours: Set your own colour scheme for forward and backward diagonals
+- Persistent Settings: Preferences are saved between sessions
 
 ## Add as a background on any webpage
 
@@ -59,9 +59,9 @@ Other elements can be given a background too, and custom parameters used, like:
 This will set the background of the element with id `svg` to a 10 PRINT SVG with
 the given colours. See [the demo] ([code]) for a live example.
 
-Adjust the colours to your heart's content on [the website][10print], and
-click the "copy" button to copy a code snippet for the current parameters to
-your clipboard.
+Adjust the colours to your heart's content on [the website][10print], and click
+the "copy" button to copy a code snippet for the current parameters to your
+clipboard.
 
 [code]: ./demo.html
 [the demo]: https://10print.xyz/demo
@@ -99,28 +99,33 @@ _See <./package.json> for canonical dependency requirements._
    pnpm run dev
    ```
 
-4. Open your browser to the URL shown in the terminal (typically `http://localhost:5173`)
+4. Open your browser to the URL shown in the terminal (typically
+   `http://localhost:8788`)
 
 ## Deployment
 
-The project is set up to deploy to Cloudflare Pages on each commit:
+The project is configured for Cloudflare Workers with static assets:
 
 ```bash
 pnpm run deploy
 ```
 
+If you use Cloudflare Workers Builds, enable non-production branch builds to get
+preview deployments for pull requests/branches, and keep `preview_urls` enabled
+in `wrangler.jsonc`.
+
 ## Technology
 
 Built with 2025's favourite web technologies:
 
-- [Cloudflare Pages]
+- [Cloudflare Workers]
 - [Radix UI]
 - [React]
 - [Tailwind CSS]
 - [TypeScript]
 - [Vite]
 
-[Cloudflare Pages]: https://pages.cloudflare.com/
+[Cloudflare Workers]: https://workers.cloudflare.com/
 [Radix UI]: https://www.radix-ui.com/
 [React]: https://react.dev/
 [Tailwind CSS]: https://tailwindcss.com/
@@ -133,7 +138,8 @@ This project is available as open source under the terms of the AGPL-3.0.
 
 ## Acknowledgements
 
-- Inspired by the book [10 PRINT CHR$(205.5+RND(1)); : GOTO 10][10print-original]
+- Inspired by the book [10 PRINT CHR$(205.5+RND(1)); : GOTO
+  10][10print-original]
 - Built by [`laney`]
 
 [`laney`]: https://orangesquash.org.uk/~laney

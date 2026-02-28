@@ -23,6 +23,7 @@
     "css-tree": "^3.1.0",
     "culori": "^4.0.2",
     "hast-util-to-jsx-runtime": "^2.3.6",
+    "hono": "^4.12.3",
     "http-status-codes": "^2.3.0",
     "jsdom": "^27.0.0",
     "linkedom": "^0.18.9",
@@ -38,7 +39,6 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20251111.0",
     "@eslint/js": "9.39.1",
     "@shikijs/types": "3.15.0",
     "@stylistic/eslint-plugin": "5.5.0",
@@ -88,14 +88,15 @@
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264",
   "scripts": {
     "build": "vite build",
-    "deploy": "pnpm run build && wrangler pages deploy",
+    "deploy": "pnpm run build && wrangler deploy",
     "dev": "concurrently --kill-others-on-fail \"pnpm run dev:build\" \"pnpm run dev:wrangler\"",
-    "dev:build": "vite dev",
-    "dev:wrangler": "pnpm wrangler pages dev",
+    "dev:build": "vite build --watch",
+    "dev:wrangler": "pnpm wrangler dev --port 8788",
     "lint": "pnpm lint:eslint && pnpm lint:stylelint",
     "lint:eslint": "eslint .",
     "lint:stylelint": "stylelint \"**/*.{css,scss}\"",
-    "test": "vitest run"
+    "test": "vitest run",
+    "types:wrangler": "wrangler types worker-configuration.d.ts"
   },
   "type": "module"
 }

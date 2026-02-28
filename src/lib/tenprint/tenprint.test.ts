@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { configSchema, type TenPrintConfig } from "@/lib/config";
+import { valueToString } from "@/lib/svg-api/helpers";
 import { generateTenPrintGroupContent, seededRandom } from "@/lib/tenprint";
 
 describe("TenPrint Library", () => {
@@ -77,33 +78,29 @@ describe("TenPrint Library", () => {
     });
 
     it("should assign correct stroke colors to lines", () => {
-      const config = {
-        ...baseConfig,
+      const config = configSchema.parse({
         firstColour: "#ff0000",
         secondColour: "#0000ff",
-        seed: 42, // Use a specific seed for predictability
-      };
-      const result = generateTenPrintGroupContent(
-        document,
-        config,
-        50, // Small size for fewer lines
-        50,
-      );
+        seed: 42,
+      });
+      const result = generateTenPrintGroupContent(document, config, 50, 50);
+
+      const firstColourStr = valueToString(config.firstColour);
+      const secondColourStr = valueToString(config.secondColour);
 
       let hasFirstColour = false;
       let hasSecondColour = false;
 
       result.querySelectorAll("line").forEach((line) => {
         const stroke = line.getAttribute("stroke");
-        if (stroke === config.firstColour) {
+        if (stroke === firstColourStr) {
           hasFirstColour = true;
-        } else if (stroke === config.secondColour) {
+        } else if (stroke === secondColourStr) {
           hasSecondColour = true;
         }
-        expect(stroke).toMatch(/^#(?:[0-9a-fA-F]{3}){1,2}$/); // Ensure it's a hex color
+        expect(stroke).toMatch(/^#(?:[0-9a-fA-F]{3}){1,2}$/);
       });
 
-      // Check if both colors were used (highly likely for a reasonable grid)
       expect(hasFirstColour).toBe(true);
       expect(hasSecondColour).toBe(true);
     });
