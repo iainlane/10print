@@ -262,7 +262,7 @@ export function ControlPanel({
             title="Source on GitHub"
           >
             <svg
-              role="img"
+              aria-hidden="true"
               viewBox="0 0 24 24"
               width={24}
               height={24}
