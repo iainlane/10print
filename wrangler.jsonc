@@ -4,8 +4,5 @@
   "main": "./worker/index.ts",
   "compatibility_date": "2025-03-29",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "binding": "ASSETS"
-  },
   "preview_urls": true
 }
