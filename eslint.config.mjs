@@ -3,7 +3,6 @@
 import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import prettierConfig from "eslint-config-prettier";
-import eslintPluginNoRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import globals from "globals";
@@ -18,7 +17,6 @@ export default [
   {
     plugins: {
       "@stylistic": stylistic,
-      "no-relative-import-paths": eslintPluginNoRelativeImportPaths,
       "simple-import-sort": eslintPluginSimpleImportSort,
     },
     // Allow unused vars if they start with an underscore
@@ -33,11 +31,6 @@ export default [
           varsIgnorePattern: "^_",
           argsIgnorePattern: "^_",
         },
-      ],
-
-      "no-relative-import-paths/no-relative-import-paths": [
-        "error",
-        { allowSameFolder: true, rootDir: "src" },
       ],
 
       "simple-import-sort/imports": "error",
@@ -59,6 +52,12 @@ export default [
         node: true,
         typescript: true,
       },
+    },
+  },
+  {
+    files: ["src/**"],
+    rules: {
+      "no-restricted-imports": ["error", { patterns: ["../**"] }],
     },
   },
   {
