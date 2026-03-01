@@ -285,8 +285,6 @@ export async function TENPRINT(
   const url = buildImageUrl(API_BASE_URL, parsedParams);
   const response = await setImage(element, url);
 
-  console.log(response.url);
-
   const responseSeed = new URL(response.url).searchParams.get("seed");
   const resolvedSeed = responseSeed ?? parsedParams.seed.toString();
 
