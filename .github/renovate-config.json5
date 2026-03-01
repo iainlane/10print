@@ -23,7 +23,7 @@
   ],
   onboarding: false,
   osvVulnerabilityAlerts: true,
-  schedule: ["before 2am on every day"],
+  schedule: ["before 2am every day"],
   packageRules: [
     {
       labels: ["update-major"],
