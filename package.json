@@ -63,7 +63,7 @@
     "stylelint": "16.25.0",
     "stylelint-config-standard": "39.0.1",
     "stylelint-config-tailwindcss": "1.0.0",
-    "syncpack": "13.0.4",
+    "syncpack": "14.0.0",
     "typescript-eslint": "8.46.4",
     "vite": "7.2.2",
     "vitest": "4.0.8",
