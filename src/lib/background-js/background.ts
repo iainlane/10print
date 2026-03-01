@@ -269,12 +269,15 @@ export async function TENPRINT(
   }
 
   const parsedParams = svgQuerySchema.parse(
-    resolveColourParams({
-      width,
-      height,
-      seed,
-      ...params,
-    }, element),
+    resolveColourParams(
+      {
+        width,
+        height,
+        seed,
+        ...params,
+      },
+      element,
+    ),
   );
 
   element.style.backgroundSize = "cover";
@@ -284,10 +287,11 @@ export async function TENPRINT(
 
   console.log(response.url);
 
-  const resolvedSeed = new URL(response.url).searchParams.get("seed");
+  const responseSeed = new URL(response.url).searchParams.get("seed");
+  const resolvedSeed = responseSeed ?? parsedParams.seed.toString();
 
-  if (save && resolvedSeed !== null) {
-    saveSeed(resolvedSeed, seedKey);
+  if (save && responseSeed !== null) {
+    saveSeed(responseSeed, seedKey);
   }
 
   if (!observeResize) {
@@ -299,12 +303,15 @@ export async function TENPRINT(
   async function update() {
     const { width: w, height: h } = element.getBoundingClientRect();
     const freshParams = svgQuerySchema.parse(
-      resolveColourParams({
-        ...restParams,
-        width: userWidth ?? w,
-        height: userHeight ?? h,
-        seed: resolvedSeed,
-      }, element),
+      resolveColourParams(
+        {
+          ...restParams,
+          width: userWidth ?? w,
+          height: userHeight ?? h,
+          seed: resolvedSeed,
+        },
+        element,
+      ),
     );
     return await setImage(element, buildImageUrl(API_BASE_URL, freshParams));
   }
