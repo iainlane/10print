@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { URL } from "url";
 import { describe, expect, it } from "vitest";
-import { ZodError } from "zod";
+import * as z from "zod/mini";
 
 import { configSchema, DEFAULT_CONFIG } from "@/lib/config";
 import { parse } from "@/lib/culori";
@@ -73,7 +73,7 @@ describe("SVG API Helpers", () => {
         const { searchParams } = new URL(`${BASE_URL}${query}`);
         await expect(
           parseAndValidateQueryParameters(searchParams),
-        ).rejects.toThrow(ZodError);
+        ).rejects.toThrow(z.core.$ZodError);
       },
     );
 

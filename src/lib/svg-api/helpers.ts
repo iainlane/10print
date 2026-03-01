@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 import { configSchemaBase } from "@/lib/config";
 import { type Color, formatCss, formatHex, formatHex8 } from "@/lib/culori";
@@ -10,8 +10,8 @@ import { type Color, formatCss, formatHex, formatHex8 } from "@/lib/culori";
  * @see {@link configSchemaBase}
  */
 export const widthHeightSchema = z.object({
-  width: z.coerce.number().positive(),
-  height: z.coerce.number().positive(),
+  width: z.coerce.number().check(z.positive()),
+  height: z.coerce.number().check(z.positive()),
 });
 
 export type WidthHeight = z.infer<typeof widthHeightSchema>;
@@ -21,7 +21,10 @@ export type SvgQueryParams = z.infer<typeof svgQuerySchema>;
 /**
  * Extend the base schema (which has defaults) to add width/height parameters.
  */
-export const svgQuerySchema = configSchemaBase.extend(widthHeightSchema.shape);
+export const svgQuerySchema = z.extend(
+  configSchemaBase,
+  widthHeightSchema.shape,
+);
 
 /**
  * Configuration for the TENPRINT function, with every field optional. Use this

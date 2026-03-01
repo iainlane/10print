@@ -1,5 +1,5 @@
 import { lexer, parse } from "css-tree";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 import { type Color, parse as parseColour } from "@/lib/culori";
 
@@ -40,7 +40,7 @@ export function validateAndConvertColour(colorValue: string): Color | null {
  * Strict Zod schemas for supported culori Color objects.
  * Alpha is optional and must be within [0, 1] when present.
  */
-const alphaSchema = z.number().min(0).max(1).optional();
+const alphaSchema = z.optional(z.number().check(z.gte(0), z.lte(1)));
 
 const rgbSchema = z.object({
   mode: z.literal("rgb"),
@@ -84,9 +84,9 @@ const supportedColorSchema = z.union([
 /**
  * Custom Zod transform for colour strings or Color objects to Color objects.
  */
-const colourTransform = z
-  .union([z.string(), supportedColorSchema])
-  .transform((val, ctx) => {
+const colourTransform = z.pipe(
+  z.union([z.string(), supportedColorSchema]),
+  z.transform((val, ctx) => {
     // If it's already a Color object, return as-is
     if (typeof val === "object") {
       return val;
@@ -95,15 +95,17 @@ const colourTransform = z
     // Otherwise it's a string, validate and convert
     const converted = validateAndConvertColour(val);
     if (converted === null) {
-      ctx.addIssue({
+      ctx.issues.push({
         code: "custom",
+        input: val,
         message: "Invalid colour",
       });
       return z.NEVER;
     }
 
     return converted;
-  });
+  }),
+);
 
 /**
  * Default configuration values, used if not provided in the request.
@@ -123,22 +125,20 @@ export const DEFAULT_CONFIG = {
  * @see {@link DEFAULT_CONFIG}
  */
 export const configSchemaBase = z.object({
-  gridSize: z.coerce
-    .number()
-    // this is silly, but there is no coerce method for integers
-    .multipleOf(1)
-    .min(10)
-    .max(100)
-    .default(DEFAULT_CONFIG.gridSize),
-  lineThickness: z.coerce
-    .number()
-    .multipleOf(1)
-    .min(1)
-    .max(5)
-    .default(DEFAULT_CONFIG.lineThickness),
-  firstColour: colourTransform.default(() => DEFAULT_CONFIG.firstColour),
-  secondColour: colourTransform.default(() => DEFAULT_CONFIG.secondColour),
-  seed: z.coerce.number().default(Math.random),
+  gridSize: z._default(
+    z.coerce
+      .number()
+      // this is silly, but there is no coerce method for integers
+      .check(z.multipleOf(1), z.gte(10), z.lte(100)),
+    DEFAULT_CONFIG.gridSize,
+  ),
+  lineThickness: z._default(
+    z.coerce.number().check(z.multipleOf(1), z.gte(1), z.lte(5)),
+    DEFAULT_CONFIG.lineThickness,
+  ),
+  firstColour: z._default(colourTransform, () => DEFAULT_CONFIG.firstColour),
+  secondColour: z._default(colourTransform, () => DEFAULT_CONFIG.secondColour),
+  seed: z._default(z.coerce.number(), Math.random),
 });
 
 /**
@@ -147,8 +147,8 @@ export const configSchemaBase = z.object({
  *
  * @see {@link configSchemaBase}
  */
-export const configSchema = z.preprocess(
-  (param) => param ?? {},
+export const configSchema = z.pipe(
+  z.transform((param) => param ?? {}),
   configSchemaBase,
 );
 
@@ -157,9 +157,10 @@ export type TenPrintConfig = z.infer<typeof configSchema>;
 /**
  * Valid values for the theme mode.
  */
-export const themeSchema = z
-  .enum(["light", "dark", "auto"] as const)
-  .default("auto");
+export const themeSchema = z._default(
+  z.enum(["light", "dark", "auto"] as const),
+  "auto",
+);
 
 export type ThemeMode = z.infer<typeof themeSchema>;
 

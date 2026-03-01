@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 import {
   configSchema,
@@ -85,7 +85,7 @@ describe("config.ts", () => {
       const { success, error } = result;
 
       expect(success).toBe(false);
-      expect(error).toBeInstanceOf(z.ZodError);
+      expect(error).toBeInstanceOf(z.core.$ZodError);
       const errorTree = z.treeifyError(error!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
       expect(Object.keys(errorTree.properties ?? {})).toEqual([path]);
     });
@@ -124,7 +124,7 @@ describe("config.ts", () => {
           secondColour: colour,
         });
 
-        expect(result.error).toBeInstanceOf(z.ZodError);
+        expect(result.error).toBeInstanceOf(z.core.$ZodError);
       },
     );
 
@@ -171,7 +171,7 @@ describe("config.ts", () => {
       const { success, error } = result;
 
       expect(success).toBe(false);
-      expect(error).toBeInstanceOf(z.ZodError);
+      expect(error).toBeInstanceOf(z.core.$ZodError);
     });
   });
 });

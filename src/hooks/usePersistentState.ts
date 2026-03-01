@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { z } from "zod";
+import * as z from "zod/mini";
 
-export function usePersistentState<T, S extends z.ZodType<T>>(
+export function usePersistentState<T, S extends z.ZodMiniType<T>>(
   key: string,
   schema: S,
 ): [z.infer<S>, React.Dispatch<React.SetStateAction<z.infer<S>>>] {

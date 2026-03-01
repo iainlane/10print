@@ -1,7 +1,7 @@
 import { type Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { parseHTML } from "linkedom";
-import { z, ZodError } from "zod";
+import * as z from "zod/mini";
 
 import { type ProcessedSvgRequest, processSvgRequestUrl } from "@/lib/svg-api";
 import { generateTenPrintGroupContent } from "@/lib/tenprint";
@@ -17,7 +17,7 @@ type WorkerContext = Context<{ Bindings: Env }>;
  * in the body, as JSON, and a 400 Bad Request error response code.
  */
 class ZodErrorResponse extends Response {
-  constructor(message: string, errors: ZodError) {
+  constructor(message: string, errors: z.core.$ZodError) {
     super(
       JSON.stringify({ message, errors: z.prettifyError(errors) }, null, 2),
       {
@@ -70,7 +70,7 @@ export async function onSvgGet(c: WorkerContext): Promise<Response> {
   try {
     processedRequest = await processSvgRequestUrl(url);
   } catch (error) {
-    if (error instanceof ZodError) {
+    if (error instanceof z.core.$ZodError) {
       return new ZodErrorResponse("Invalid query parameters", error);
     }
 
