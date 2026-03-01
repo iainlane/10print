@@ -100,7 +100,7 @@ _See <./package.json> for canonical dependency requirements._
    ```
 
 4. Open your browser to the URL shown in the terminal (typically
-   `http://localhost:8788`)
+   `http://localhost:5173`)
 
 ## Deployment
 
