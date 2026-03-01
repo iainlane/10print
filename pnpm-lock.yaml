@@ -105,12 +105,12 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.1(react@19.1.1)
-      react-icons:
-        specifier: ^5.5.0
-        version: 5.5.0(react@19.1.1)
       seedrandom:
         specifier: ^3.0.5
         version: 3.0.5
+      simple-icons:
+        specifier: ^16.10.0
+        version: 16.10.0
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.3.1
@@ -3152,11 +3152,6 @@ packages:
     peerDependencies:
       react: ^19.1.1
 
-  react-icons@5.5.0:
-    resolution: {integrity: sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==}
-    peerDependencies:
-      react: '*'
-
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
@@ -3292,6 +3287,10 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-icons@16.10.0:
+    resolution: {integrity: sha512-62kuxaG3pE+cFNerudUtwb9BLmudzayHrlHkvU9gf8Nxcj7VYOm9dh3WNbGaFk60aQtfnRyzViZaouFG2B45kg==}
+    engines: {node: '>=0.12.18'}
 
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -6583,10 +6582,6 @@ snapshots:
       react: 19.1.1
       scheduler: 0.26.0
 
-  react-icons@5.5.0(react@19.1.1):
-    dependencies:
-      react: 19.1.1
-
   react-refresh@0.18.0: {}
 
   react-remove-scroll-bar@2.3.8(@types/react@19.2.3)(react@19.1.1):
@@ -6750,6 +6745,8 @@ snapshots:
   siginfo@2.0.0: {}
 
   signal-exit@4.1.0: {}
+
+  simple-icons@16.10.0: {}
 
   sisteransi@1.0.5: {}
 

@@ -1,5 +1,5 @@
-import { FaGithub } from "react-icons/fa";
 import { Shuffle } from "lucide-react";
+import { siGithub } from "simple-icons";
 import { Slot } from "@radix-ui/react-slot";
 
 import { ColourInput } from "@/components/ColourInput";
@@ -257,7 +257,15 @@ export function ControlPanel({
             aria-label="Source on GitHub"
             title="Source on GitHub"
           >
-            <FaGithub />
+            <svg
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+              height={24}
+              fill="currentColor"
+            >
+              <path d={siGithub.path} />
+            </svg>
           </a>
         </section>
       </SheetFooter>
