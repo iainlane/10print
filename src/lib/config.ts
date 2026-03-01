@@ -11,9 +11,9 @@ import { type Color, parse as parseColour } from "@/lib/culori";
  * @param val The string to check.
  * @returns The colour object if valid, or null if invalid.
  */
-export function validateAndConvertColour(colorValue: string): Color | null {
+export function validateAndConvertColour(colourValue: string): Color | null {
   // First validate with csstree
-  const ast = parse(colorValue, {
+  const ast = parse(colourValue, {
     context: "value",
   });
 
@@ -28,7 +28,7 @@ export function validateAndConvertColour(colorValue: string): Color | null {
   }
 
   // If valid, parse and convert with culori
-  const parsed = parseColour(colorValue);
+  const parsed = parseColour(colourValue);
   if (parsed === undefined) {
     return null;
   }
