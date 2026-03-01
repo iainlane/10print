@@ -221,26 +221,31 @@ export async function TENPRINT(
   element.style.backgroundSize = "cover";
 
   const url = buildImageUrl(API_BASE_URL, parsedParams);
-
-  async function update() {
-    return await setImage(element, url);
-  }
-
-  const response = await update();
+  const response = await setImage(element, url);
 
   console.log(response.url);
 
-  if (save) {
-    const url = new URL(response.url);
-    const seed = url.searchParams.get("seed");
+  const resolvedSeed = new URL(response.url).searchParams.get("seed");
 
-    if (seed !== null) {
-      saveSeed(seed, seedKey);
-    }
+  if (save && resolvedSeed !== null) {
+    saveSeed(resolvedSeed, seedKey);
   }
 
   if (!observeResize) {
     return;
+  }
+
+  const { width: userWidth, height: userHeight, ...restParams } = params;
+
+  async function update() {
+    const { width: w, height: h } = element.getBoundingClientRect();
+    const freshParams = svgQuerySchema.parse({
+      ...restParams,
+      width: userWidth ?? w,
+      height: userHeight ?? h,
+      seed: resolvedSeed,
+    });
+    return await setImage(element, buildImageUrl(API_BASE_URL, freshParams));
   }
 
   const debouncedUpdate = debounce(update, DEBOUNCE_MS);
