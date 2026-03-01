@@ -7,7 +7,6 @@ import {
   STORAGE_KEY,
   THEME_STORAGE_KEY,
   themeSchema,
-  validateAndConvertColour,
 } from "./config";
 
 describe("config.ts", () => {
@@ -91,13 +90,27 @@ describe("config.ts", () => {
     });
 
     it.each([
-      ["#123456"],
-      ["hotpink"],
-      ["rgb(255, 0, 0)"],
-      ["hsl(0, 100%, 50%)"],
-      ["rgba(255, 0, 0, 0.5)"],
-      ["hsla(0, 100%, 50%, 0.5)"],
-    ])("should accept valid CSS colours: %s", (colour) => {
+      [
+        "#123456",
+        {
+          mode: "rgb",
+          r: 0.07058823529411765,
+          g: 0.20392156862745098,
+          b: 0.33725490196078434,
+        },
+      ],
+      [
+        "hotpink",
+        { mode: "rgb", r: 1, g: 0.4117647058823529, b: 0.7058823529411765 },
+      ],
+      ["rgb(255, 0, 0)", { mode: "rgb", r: 1, g: 0, b: 0 }],
+      ["hsl(0, 100%, 50%)", { mode: "hsl", h: 0, s: 1, l: 0.5 }],
+      ["rgba(255, 0, 0, 0.5)", { mode: "rgb", r: 1, g: 0, b: 0, alpha: 0.5 }],
+      [
+        "hsla(0, 100%, 50%, 0.5)",
+        { mode: "hsl", h: 0, s: 1, l: 0.5, alpha: 0.5 },
+      ],
+    ])("should accept valid CSS colours: %s", (colour, expected) => {
       const result = configSchema.safeParse({
         ...DEFAULT_CONFIG,
         firstColour: colour,
@@ -106,12 +119,10 @@ describe("config.ts", () => {
 
       expect(result.error).toBeUndefined();
 
-      const parsedColour = validateAndConvertColour(colour);
-
       expect(result.data).toEqual({
         ...DEFAULT_CONFIG,
-        firstColour: parsedColour,
-        secondColour: parsedColour,
+        firstColour: expected,
+        secondColour: expected,
       });
     });
 

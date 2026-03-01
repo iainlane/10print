@@ -1,40 +1,6 @@
-import { lexer, parse } from "css-tree";
 import * as z from "zod/mini";
 
-import { type Color, parse as parseColour } from "@/lib/culori";
-
-/**
- * Check if a string is a valid CSS colour and parse it with culori.
- *
- * Uses `csstree` for validation and `culori` for conversion.
- *
- * @param val The string to check.
- * @returns The colour object if valid, or null if invalid.
- */
-export function validateAndConvertColour(colourValue: string): Color | null {
-  // First validate with csstree
-  const ast = parse(colourValue, {
-    context: "value",
-  });
-
-  if (ast.type !== "Value") {
-    return null;
-  }
-
-  const matchResult = lexer.matchProperty("color", ast);
-
-  if (matchResult.error !== null) {
-    return null;
-  }
-
-  // If valid, parse and convert with culori
-  const parsed = parseColour(colourValue);
-  if (parsed === undefined) {
-    return null;
-  }
-
-  return parsed;
-}
+import { parse as parseColour } from "@/lib/culori";
 
 /**
  * Strict Zod schemas for supported culori Color objects.
@@ -92,9 +58,8 @@ const colourTransform = z.pipe(
       return val;
     }
 
-    // Otherwise it's a string, validate and convert
-    const converted = validateAndConvertColour(val);
-    if (converted === null) {
+    const parsed = parseColour(val);
+    if (parsed === undefined) {
       ctx.issues.push({
         code: "custom",
         input: val,
@@ -103,7 +68,7 @@ const colourTransform = z.pipe(
       return z.NEVER;
     }
 
-    return converted;
+    return parsed;
   }),
 );
 
