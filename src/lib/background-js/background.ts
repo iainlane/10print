@@ -83,12 +83,17 @@ function getColourResolverElement(doc: Document): HTMLDivElement {
  * like `color-mix()`, `light-dark()`, or `var()` are computed into a value
  * culori can parse.
  */
-function resolveCssColour(value: string): string {
-  const el = getColourResolverElement(document);
+function resolveCssColour(
+  value: string,
+  target: Element | Document = document,
+): string {
+  const doc = target instanceof Document ? target : target.ownerDocument;
+  const view = doc.defaultView ?? window;
+  const el = getColourResolverElement(doc);
   el.style.color = "";
   el.style.color = value;
 
-  return getComputedStyle(el).color;
+  return view.getComputedStyle(el).color;
 }
 
 /**
@@ -97,12 +102,13 @@ function resolveCssColour(value: string): string {
  */
 function resolveColourParams(
   params: Record<string, unknown>,
+  target?: Element | Document,
 ): Record<string, unknown> {
   const out = { ...params };
 
   for (const key of ["firstColour", "secondColour"] as const) {
     if (typeof out[key] === "string") {
-      out[key] = resolveCssColour(out[key]);
+      out[key] = resolveCssColour(out[key], target);
     }
   }
 
@@ -268,7 +274,7 @@ export async function TENPRINT(
       height,
       seed,
       ...params,
-    }),
+    }, element),
   );
 
   element.style.backgroundSize = "cover";
@@ -298,7 +304,7 @@ export async function TENPRINT(
         width: userWidth ?? w,
         height: userHeight ?? h,
         seed: resolvedSeed,
-      }),
+      }, element),
     );
     return await setImage(element, buildImageUrl(API_BASE_URL, freshParams));
   }
