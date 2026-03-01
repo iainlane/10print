@@ -16,21 +16,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        backgroundbody: path.resolve(__dirname, "background-body.ts"),
-        backgroundelement: path.resolve(__dirname, "background-element.ts"),
         demo: path.resolve(__dirname, "demo.html"),
         main: path.resolve(__dirname, "index.html"),
-      },
-      output: {
-        entryFileNames: function (chunkInfo) {
-          const filenameMap: Record<string, string> = {
-            backgroundbody: "background-body.js",
-            backgroundelement: "background-element.js",
-          };
-
-          return filenameMap[chunkInfo.name] ?? "assets/[name]-[hash].js";
-        },
-        minifyInternalExports: false,
       },
     },
     sourcemap: true,
