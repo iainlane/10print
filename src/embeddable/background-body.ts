@@ -1,5 +1,6 @@
-import { TENPRINT } from "@/lib/background-js/background";
 import { type PartialConfig, type WidthHeight } from "@/lib/svg-api/helpers";
+
+import { TENPRINT } from "./background-element";
 
 /**
  * Use this script like:
