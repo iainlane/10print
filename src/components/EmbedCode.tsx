@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { formatCss } from "@/lib/culori";
 import { TenPrintConfig } from "@/lib/config";
+import { generateEmbedCode } from "@/lib/embedCode";
 import { Fragment, useMemo } from "react";
 
 import { jsx, jsxs } from "react/jsx-runtime";
@@ -49,7 +49,7 @@ interface EmbedCodeProps {
   includeSeed?: boolean;
 }
 
-export function EmbedCode({ config, className, includeSeed = false }: EmbedCodeProps) {
+export default function EmbedCode({ config, className, includeSeed = false }: EmbedCodeProps) {
   const { effectiveTheme } = useThemeContext();
   const embedCode = useMemo(() => generateEmbedCode(config, includeSeed), [config, includeSeed]);
 
@@ -85,23 +85,4 @@ export function EmbedCode({ config, className, includeSeed = false }: EmbedCodeP
   );
 
   return elem;
-}
-
-export function generateEmbedCode(config: TenPrintConfig, includeSeed = false): string {
-  const firstColourCss = formatCss(config.firstColour);
-  const secondColourCss = formatCss(config.secondColour);
-
-  const options = {
-    gridSize: config.gridSize,
-    lineThickness: config.lineThickness,
-    firstColour: firstColourCss,
-    secondColour: secondColourCss,
-    ...(includeSeed && { seed: config.seed }),
-  };
-
-  return `<script type="module">
-  import { TENPRINT } from "https://10print.xyz/background-element.js";
-  
-  TENPRINT(document.body, ${JSON.stringify(options, null, 2).replace(/^/gm, '  ')});
-</script>`;
 }

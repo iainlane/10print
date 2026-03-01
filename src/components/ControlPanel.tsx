@@ -4,8 +4,8 @@ import { Slot } from "@radix-ui/react-slot";
 
 import { ColourInput } from "@/components/ColourInput";
 import { CopyButton } from "@/components/CopyButton";
-import { EmbedCode, generateEmbedCode } from "@/components/EmbedCode";
 import { InfoPanel } from "@/components/InfoPanel";
+import { generateEmbedCode } from "@/lib/embedCode";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -26,7 +26,9 @@ import { cn } from "@/lib/utils";
 import { RangeInput } from "./RangeInput";
 import { ThemeSelector } from "./ThemeSelector";
 import { Color } from "@/lib/culori";
-import React, { useId, useState } from "react";
+import React, { lazy, Suspense, useId, useState } from "react";
+
+const EmbedCode = lazy(() => import("@/components/EmbedCode"));
 
 interface SectionProps {
   title: string;
@@ -197,7 +199,9 @@ export function ControlPanel({
                 <label htmlFor="include-seed">Include seed</label>
               </header>
 
-              <EmbedCode config={config} includeSeed={includeSeed} />
+              <Suspense fallback={<div className="text-muted-foreground py-2">Loading…</div>}>
+                <EmbedCode config={config} includeSeed={includeSeed} />
+              </Suspense>
             </div>
           </details>
         </Section>
