@@ -52,6 +52,41 @@ const DEBOUNCE_MS = 100;
 const LOCAL_STORAGE_KEY = "background-seed";
 
 /**
+ * Resolve a CSS colour string via the browser's CSS engine, so that functions
+ * like `color-mix()`, `light-dark()`, or `var()` are computed into a value
+ * culori can parse.
+ */
+function resolveCssColour(value: string): string {
+  const el = document.createElement("div");
+  el.style.display = "none";
+  el.style.color = value;
+  document.body.appendChild(el);
+
+  const resolved = getComputedStyle(el).color;
+  el.remove();
+
+  return resolved;
+}
+
+/**
+ * If `firstColour` or `secondColour` are strings, resolve them through the
+ * browser's CSS engine before they reach culori.
+ */
+function resolveColourParams(
+  params: Record<string, unknown>,
+): Record<string, unknown> {
+  const out = { ...params };
+
+  for (const key of ["firstColour", "secondColour"] as const) {
+    if (typeof out[key] === "string") {
+      out[key] = resolveCssColour(out[key]);
+    }
+  }
+
+  return out;
+}
+
+/**
  * Saves seed to localStorage
  */
 export function saveSeed(
@@ -204,12 +239,14 @@ export async function TENPRINT(
     height = height ?? elementHeight;
   }
 
-  const parsedParams = svgQuerySchema.parse({
-    width,
-    height,
-    seed,
-    ...params,
-  });
+  const parsedParams = svgQuerySchema.parse(
+    resolveColourParams({
+      width,
+      height,
+      seed,
+      ...params,
+    }),
+  );
 
   element.style.backgroundSize = "cover";
 
@@ -232,12 +269,14 @@ export async function TENPRINT(
 
   async function update() {
     const { width: w, height: h } = element.getBoundingClientRect();
-    const freshParams = svgQuerySchema.parse({
-      ...restParams,
-      width: userWidth ?? w,
-      height: userHeight ?? h,
-      seed: resolvedSeed,
-    });
+    const freshParams = svgQuerySchema.parse(
+      resolveColourParams({
+        ...restParams,
+        width: userWidth ?? w,
+        height: userHeight ?? h,
+        seed: resolvedSeed,
+      }),
+    );
     return await setImage(element, buildImageUrl(API_BASE_URL, freshParams));
   }
 
