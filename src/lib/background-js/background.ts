@@ -11,7 +11,7 @@ import {
  *
  * ```html
  * <script>
- *  import { TENPRINT } from "https://10print.xys/static/background.js"
+ *  import { TENPRINT } from "https://10print.xyz/background-element.js"
  *
  *  TENPRINT({
  *    gridSize: 10,
@@ -69,7 +69,7 @@ export function saveSeed(
 
   if (Number.isNaN(parsedSeed)) {
     console.warn(
-      `Tried to save invalid seed "${seed}" to localStorage, ignring.`,
+      `Tried to save invalid seed "${seed}" to localStorage, ignoring.`,
     );
 
     return undefined;

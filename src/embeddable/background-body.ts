@@ -5,7 +5,7 @@ import { type PartialConfig, type WidthHeight } from "@/lib/svg-api/helpers";
  * Use this script like:
  *
  * ```html
- * <script src="https://10print.xyz/static/background-body.js"></script>
+ * <script src="https://10print.xyz/background-body.js"></script>
  * ```
  *
  * and the `<body>` element will have a background image set to a random 10PRINT
