@@ -49,13 +49,31 @@ class InternalServerError extends Response {
  */
 export async function onSvgHead(c: WorkerContext): Promise<Response> {
   const url = new URL(c.req.raw.url);
-  const processedRequest = await processSvgRequestUrl(url);
+
+  let processedRequest: ProcessedSvgRequest;
+  try {
+    processedRequest = await processSvgRequestUrl(url);
+  } catch (error) {
+    if (error instanceof z.core.$ZodError) {
+      return new ZodErrorResponse("Invalid query parameters", error);
+    }
+
+    console.error("Unexpected error during parameter processing:", error);
+    return new InternalServerError(
+      "Internal Server Error during parameter processing",
+    );
+  }
 
   if (processedRequest.type === "redirect") {
     return processedRequest.response;
   }
 
-  return new Response(null);
+  return new Response(null, {
+    headers: {
+      "content-type": "image/svg+xml",
+      "cache-control": "public, max-age=3600",
+    },
+  });
 }
 
 /**
