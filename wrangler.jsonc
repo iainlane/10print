@@ -5,9 +5,7 @@
   "compatibility_date": "2025-03-29",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
+    "binding": "ASSETS"
   },
-  "preview_urls": true,
-  "upload_source_maps": true,
+  "preview_urls": true
 }

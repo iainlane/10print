@@ -34,14 +34,7 @@ import {
  * @example https://10print.xyz/svg
  */
 const API_BASE_URL = (() => {
-  // In dev, the API is served by `wrangler dev` which runs on
-  // http://localhost:8788.
-  const ourUrl = import.meta.env.PROD
-    ? import.meta.url
-    : "http://localhost:8788";
-
-  const url = new URL(ourUrl);
-
+  const url = new URL(import.meta.url);
   url.pathname = "/svg";
 
   return url.toString();

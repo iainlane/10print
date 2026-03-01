@@ -26,6 +26,7 @@ export default defineConfig({
         entryFileNames: "[name].js",
       },
     },
+    outDir: "dist/client",
     emptyOutDir: false,
     sourcemap: true,
   },

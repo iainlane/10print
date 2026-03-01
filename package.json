@@ -38,6 +38,7 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.25.6",
     "@eslint/js": "9.39.1",
     "@shikijs/types": "3.15.0",
     "@stylistic/eslint-plugin": "5.5.0",
@@ -51,7 +52,6 @@
     "@typescript-eslint/utils": "8.46.4",
     "@vitejs/plugin-react": "5.1.0",
     "@vitest/coverage-v8": "4.0.8",
-    "concurrently": "9.2.1",
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-no-relative-import-paths": "1.6.1",
@@ -68,7 +68,7 @@
     "vite": "7.2.2",
     "vitest": "4.0.8",
     "vitest-mock-extended": "3.1.0",
-    "wrangler": "4.59.1"
+    "wrangler": "4.69.0"
   },
   "engines": {
     "node": "24.11.1"
@@ -87,9 +87,8 @@
   "scripts": {
     "build": "vite build && vite build --config vite.config.embeddable.ts",
     "deploy": "pnpm run build && wrangler deploy",
-    "dev": "concurrently --kill-others-on-fail \"pnpm run dev:build\" \"pnpm run dev:wrangler\"",
-    "dev:build": "concurrently \"vite build --watch\" \"vite build --watch --config vite.config.embeddable.ts\"",
-    "dev:wrangler": "pnpm wrangler dev --port 8788",
+    "dev": "vite dev",
+    "preview": "vite preview",
     "lint": "pnpm lint:eslint && pnpm lint:stylelint",
     "lint:eslint": "eslint .",
     "lint:stylelint": "stylelint \"**/*.{css,scss}\"",
