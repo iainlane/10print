@@ -10,15 +10,15 @@ import {
  * Use this script like:
  *
  * ```html
- * <script>
- *  import { TENPRINT } from "https://10print.xyz/background-element.js"
+ * <script type="module">
+ *  import { TENPRINT } from "https://10print.xyz/background-element.js";
  *
- *  TENPRINT({
+ *  TENPRINT(document.body, {
  *    gridSize: 10,
  *    lineThickness: 1,
  *    firstColour: "#000000",
  *    secondColour: "#FFFFFF",
- *  }, document.body)
+ *  });
  * </script>
  * ```
  * and the `document.body` element will have a background image set to a random
@@ -51,21 +51,44 @@ const DEBOUNCE_MS = 100;
  */
 const LOCAL_STORAGE_KEY = "background-seed";
 
+let colourResolverEl: HTMLDivElement | null = null;
+
+function getResolverParent(doc: Document): HTMLElement {
+  const body = doc.querySelector("body");
+  return body instanceof HTMLElement ? body : doc.documentElement;
+}
+
+function getColourResolverElement(doc: Document): HTMLDivElement {
+  if (colourResolverEl !== null && colourResolverEl.ownerDocument === doc) {
+    if (!colourResolverEl.isConnected) {
+      getResolverParent(doc).appendChild(colourResolverEl);
+    }
+
+    return colourResolverEl;
+  }
+
+  const el = doc.createElement("div");
+  el.style.display = "none";
+  el.style.position = "absolute";
+  el.style.pointerEvents = "none";
+  el.style.visibility = "hidden";
+  getResolverParent(doc).appendChild(el);
+  colourResolverEl = el;
+
+  return el;
+}
+
 /**
  * Resolve a CSS colour string via the browser's CSS engine, so that functions
  * like `color-mix()`, `light-dark()`, or `var()` are computed into a value
  * culori can parse.
  */
 function resolveCssColour(value: string): string {
-  const el = document.createElement("div");
-  el.style.display = "none";
+  const el = getColourResolverElement(document);
+  el.style.color = "";
   el.style.color = value;
-  document.body.appendChild(el);
 
-  const resolved = getComputedStyle(el).color;
-  el.remove();
-
-  return resolved;
+  return getComputedStyle(el).color;
 }
 
 /**
