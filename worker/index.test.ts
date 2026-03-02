@@ -1,8 +1,10 @@
 import { StatusCodes } from "http-status-codes";
+import { parseHTML } from "linkedom";
 import { describe, expect, it, vi } from "vitest";
 
 import { configSchema } from "@/lib/config";
 import { valueToString } from "@/lib/svg-api/helpers";
+import { createExpectedTenPrintSvg } from "@/lib/tenprint/test-utils";
 
 import worker from "./index";
 
@@ -42,7 +44,8 @@ function headersToObject(response: Response): Record<string, string> {
 
 describe("worker", () => {
   it("returns SVG content for a canonical /svg request", async () => {
-    const query = generateCanonicalQuery({ seed: 123, width: 1, height: 1 });
+    const seed = 123;
+    const query = generateCanonicalQuery({ seed, width: 1, height: 1 });
     const request = new Request(`${BASE_URL}?${query}`);
     const env = createMockEnv();
 
@@ -56,8 +59,15 @@ describe("worker", () => {
     });
     const defaults = configSchema.parse({});
     const svgText = await response.text();
-    const expectedSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" height="1" width="1"><g stroke-linecap="round" stroke-width="${defaults.lineThickness.toString()}"><line stroke="#3B82F6" y2="0" x2="2" y1="1" x1="1" /><line stroke="#3B82F6" y2="1" x2="2" y1="2" x1="1" /><line stroke="#EC4899" y2="1" x2="1" y1="0" x1="0" /><line stroke="#EC4899" y2="2" x2="1" y1="1" x1="0" /></g></svg>`;
-    expect(svgText).toBe(expectedSvg);
+    const { document: parsedDocument } = parseHTML(svgText);
+    const parsedSvg = parsedDocument.querySelector("svg");
+    const expectedSvg = createExpectedTenPrintSvg(parsedDocument, {
+      lineThickness: defaults.lineThickness,
+      firstStroke: valueToString(defaults.firstColour),
+      secondStroke: valueToString(defaults.secondColour),
+    });
+
+    expect(parsedSvg?.isEqualNode(expectedSvg)).toBe(true);
   });
 
   it("returns headers for a canonical HEAD /svg request", async () => {
