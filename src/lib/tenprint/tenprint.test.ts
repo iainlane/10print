@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { configSchema, type TenPrintConfig } from "@/lib/config";
 import { valueToString } from "@/lib/svg-api/helpers";
 import { generateTenPrintGroupContent, seededRandom } from "@/lib/tenprint";
+import { createExpectedTenPrintGroup } from "@/lib/tenprint/test-utils";
 
 describe("TenPrint Library", () => {
   describe("seededRandom", () => {
@@ -66,43 +67,31 @@ describe("TenPrint Library", () => {
       expect(group3.childNodes.length).toBe(0);
     });
 
-    it("should generate line elements inside the group", () => {
-      const result = generateTenPrintGroupContent(
-        document,
-        baseConfig,
-        100,
-        100,
-      );
-      expect(result.childNodes.length).toBeGreaterThan(0);
-      expect((result.firstChild as Element).tagName.toLowerCase()).toBe("line");
+    it("should generate path elements inside the group", () => {
+      const result = generateTenPrintGroupContent(document, baseConfig, 1, 1);
+      const expected = createExpectedTenPrintGroup(document, {
+        lineThickness: baseConfig.lineThickness,
+        firstStroke: valueToString(baseConfig.firstColour),
+        secondStroke: valueToString(baseConfig.secondColour),
+      });
+
+      expect(result.isEqualNode(expected)).toBe(true);
     });
 
-    it("should assign correct stroke colors to lines", () => {
+    it("should assign correct stroke colours and path data", () => {
       const config = configSchema.parse({
         firstColour: "#ff0000",
         secondColour: "#0000ff",
-        seed: 42,
+        seed: 123,
       });
-      const result = generateTenPrintGroupContent(document, config, 50, 50);
-
-      const firstColourStr = valueToString(config.firstColour);
-      const secondColourStr = valueToString(config.secondColour);
-
-      let hasFirstColour = false;
-      let hasSecondColour = false;
-
-      result.querySelectorAll("line").forEach((line) => {
-        const stroke = line.getAttribute("stroke");
-        if (stroke === firstColourStr) {
-          hasFirstColour = true;
-        } else if (stroke === secondColourStr) {
-          hasSecondColour = true;
-        }
-        expect(stroke).toMatch(/^#(?:[0-9a-fA-F]{3}){1,2}$/);
+      const result = generateTenPrintGroupContent(document, config, 1, 1);
+      const expected = createExpectedTenPrintGroup(document, {
+        lineThickness: config.lineThickness,
+        firstStroke: valueToString(config.firstColour),
+        secondStroke: valueToString(config.secondColour),
       });
 
-      expect(hasFirstColour).toBe(true);
-      expect(hasSecondColour).toBe(true);
+      expect(result.isEqualNode(expected)).toBe(true);
     });
   });
 });

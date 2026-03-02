@@ -24,7 +24,7 @@ export function seededRandom(x: number, y: number, seed: number): number {
  * @param config The full TenPrint configuration.
  * @param width The desired width of the SVG pattern area.
  * @param height The desired height of the SVG pattern area.
- * @returns An SVGGElement containing all the calculated <line> elements.
+ * @returns An SVGGElement containing all the calculated diagonal path data.
  */
 export function generateTenPrintGroupContent(
   doc: Document,
@@ -37,6 +37,7 @@ export function generateTenPrintGroupContent(
   const groupElement = doc.createElementNS(SVG_NS, "g");
   groupElement.setAttribute("stroke-width", lineThickness.toString());
   groupElement.setAttribute("stroke-linecap", "round");
+  groupElement.setAttribute("fill", "none");
 
   if (width <= 0 || height <= 0) {
     return groupElement; // Return empty group
@@ -52,8 +53,8 @@ export function generateTenPrintGroupContent(
   const cols = Math.ceil(width / cellSize) + 1;
   const rows = Math.ceil(height / cellSize) + 1;
 
-  const forwardLines = doc.createDocumentFragment();
-  const backwardLines = doc.createDocumentFragment();
+  const forwardPathCommands: string[] = [];
+  const backwardPathCommands: string[] = [];
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -71,29 +72,29 @@ export function generateTenPrintGroupContent(
       const x2 = Math.ceil(rawX2);
       const y2 = Math.ceil(rawY2);
 
-      const line = doc.createElementNS(SVG_NS, "line");
-
-      line.setAttribute("x1", x1.toString());
-      line.setAttribute("y1", y1.toString());
-      line.setAttribute("x2", x2.toString());
-      line.setAttribute("y2", y2.toString());
-      line.setAttribute(
-        "stroke",
-        isForwardDiagonal
-          ? valueToString(firstColour)
-          : valueToString(secondColour),
-      );
+      const command = `M${x1.toString()} ${y1.toString()}L${x2.toString()} ${y2.toString()}`;
 
       if (isForwardDiagonal) {
-        forwardLines.appendChild(line);
+        forwardPathCommands.push(command);
       } else {
-        backwardLines.appendChild(line);
+        backwardPathCommands.push(command);
       }
     }
   }
 
-  groupElement.appendChild(forwardLines);
-  groupElement.appendChild(backwardLines);
+  if (forwardPathCommands.length > 0) {
+    const forwardPath = doc.createElementNS(SVG_NS, "path");
+    forwardPath.setAttribute("stroke", valueToString(firstColour));
+    forwardPath.setAttribute("d", forwardPathCommands.join(""));
+    groupElement.appendChild(forwardPath);
+  }
+
+  if (backwardPathCommands.length > 0) {
+    const backwardPath = doc.createElementNS(SVG_NS, "path");
+    backwardPath.setAttribute("stroke", valueToString(secondColour));
+    backwardPath.setAttribute("d", backwardPathCommands.join(""));
+    groupElement.appendChild(backwardPath);
+  }
 
   return groupElement;
 }
