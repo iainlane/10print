@@ -1,11 +1,3 @@
-import { cn } from "@/lib/utils";
-import { TenPrintConfig } from "@/lib/config";
-import { generateEmbedCode } from "@/lib/embedCode";
-import { Fragment, useMemo } from "react";
-
-import { jsx, jsxs } from "react/jsx-runtime";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-import { useThemeContext } from "./ThemeProvider";
 import { createHighlighterCoreSync } from "@shikijs/core";
 import { createJavaScriptRegexEngine } from "@shikijs/engine-javascript";
 import htmlLang from "@shikijs/langs/html";
@@ -13,6 +5,13 @@ import javascriptLang from "@shikijs/langs/javascript";
 import catppuccinFrappeTheme from "@shikijs/themes/catppuccin-frappe";
 import catppuccinLatteTheme from "@shikijs/themes/catppuccin-latte";
 import type { CodeToHastOptions } from "@shikijs/types";
+import { useMemo } from "react";
+
+import { TenPrintConfig } from "@/lib/config";
+import { generateEmbedCode } from "@/lib/embedCode";
+import { cn } from "@/lib/utils";
+
+import { useThemeContext } from "./ThemeProvider";
 
 type BundledLanguage = "html" | "javascript" | "js";
 type BundledTheme = "catppuccin-latte" | "catppuccin-frappe";
@@ -36,11 +35,11 @@ const highlighter = createHighlighterCoreSync({
   engine,
 });
 
-function codeToHast(
+function codeToHtml(
   code: string,
   options: CodeToHastOptions<BundledLanguage, BundledTheme>,
-) {
-  return highlighter.codeToHast(code, options);
+): string {
+  return highlighter.codeToHtml(code, options);
 }
 
 interface EmbedCodeProps {
@@ -49,13 +48,20 @@ interface EmbedCodeProps {
   includeSeed?: boolean;
 }
 
-export default function EmbedCode({ config, className, includeSeed = false }: EmbedCodeProps) {
+export default function EmbedCode({
+  config,
+  className,
+  includeSeed = false,
+}: EmbedCodeProps) {
   const { effectiveTheme } = useThemeContext();
-  const embedCode = useMemo(() => generateEmbedCode(config, includeSeed), [config, includeSeed]);
+  const embedCode = useMemo(
+    () => generateEmbedCode(config, includeSeed),
+    [config, includeSeed],
+  );
 
-  const txt = useMemo(
+  const html = useMemo(
     () =>
-      codeToHast(embedCode, {
+      codeToHtml(embedCode, {
         lang: "html",
         theme:
           effectiveTheme === "light" ? "catppuccin-latte" : "catppuccin-frappe",
@@ -71,18 +77,8 @@ export default function EmbedCode({ config, className, includeSeed = false }: Em
           },
         ],
       }),
-    [effectiveTheme, embedCode],
+    [effectiveTheme, embedCode, className],
   );
 
-  const elem = useMemo(
-    () =>
-      toJsxRuntime(txt, {
-        Fragment,
-        jsx,
-        jsxs,
-      }),
-    [txt],
-  );
-
-  return elem;
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

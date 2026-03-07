@@ -138,3 +138,8 @@ export const STORAGE_KEY = "tenprint-config";
  * Key for storing the theme mode in localStorage.
  */
 export const THEME_STORAGE_KEY = "tenprint-theme";
+
+/**
+ * Key for storing the welcome overlay minimised state in localStorage.
+ */
+export const OVERLAY_STORAGE_KEY = "tenprint-overlay-minimised";

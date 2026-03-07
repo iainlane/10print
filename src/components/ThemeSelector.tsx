@@ -26,9 +26,13 @@ const themeOptions: Readonly<{
 
 interface ThemeSelectorProps {
   className?: string;
+  portalContainer?: HTMLElement | null;
 }
 
-export function ThemeSelector({ className }: ThemeSelectorProps) {
+export function ThemeSelector({
+  className,
+  portalContainer,
+}: ThemeSelectorProps) {
   const [themeMode, setThemeMode] = useTheme();
 
   function handleThemeChange(value: string) {
@@ -45,7 +49,7 @@ export function ThemeSelector({ className }: ThemeSelectorProps) {
       >
         <SelectValue placeholder="Select theme" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent container={portalContainer ?? undefined}>
         {
           /* Iterate over the theme options and create a SelectItem for each */
           Object.entries(themeOptions).map(([key, option]) => {

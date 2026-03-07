@@ -25,7 +25,7 @@
     "strict": true,
     "strictNullChecks": true,
     "target": "esnext",
-    "types": ["vite/client"]
+    "types": ["vite/client", "react/canary", "react-dom/canary"]
   },
   "exclude": [".wrangler", "dist", "node_modules"],
   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
