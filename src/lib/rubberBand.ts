@@ -11,7 +11,9 @@ export function applyRubberBand(delta: number, limit: number): number {
   const sign = Math.sign(delta);
   const abs = Math.abs(delta);
 
-  if (abs <= limit) return delta;
+  if (abs <= limit) {
+    return delta;
+  }
 
   const excess = abs - limit;
   return sign * (limit + Math.log1p(excess) * DAMPING_FACTOR);

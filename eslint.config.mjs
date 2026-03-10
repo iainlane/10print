@@ -33,6 +33,9 @@ export default [
         },
       ],
 
+      curly: ["error", "all"],
+      "comma-spacing": "error",
+
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
     },
@@ -66,7 +69,6 @@ export default [
       "dist/",
       "node_modules/",
       "src/*/coverage/",
-      "src/components/*",
       "worker-configuration.d.ts",
     ],
   },

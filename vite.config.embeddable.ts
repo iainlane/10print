@@ -21,7 +21,9 @@ function embeddableShimsPlugin(): Plugin {
       const shimEntries: { stable: string; hashed: string }[] = [];
 
       for (const chunk of Object.values(bundle)) {
-        if (chunk.type !== "chunk" || !chunk.isEntry) continue;
+        if (chunk.type !== "chunk" || !chunk.isEntry) {
+          continue;
+        }
 
         const stableFilename = `${chunk.name}.js`;
         const hashedFilename = chunk.fileName;

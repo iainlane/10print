@@ -1,5 +1,7 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
+import { ComponentProps } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -7,10 +9,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ComponentProps } from "react";
 
-interface CopyButtonProps
-  extends Omit<ComponentProps<typeof Button>, "onClick" | "children"> {
+interface CopyButtonProps extends Omit<
+  ComponentProps<typeof Button>,
+  "onClick" | "children"
+> {
   text: string;
   children?: React.ReactNode;
   tooltip?: string;
@@ -30,7 +33,9 @@ export function CopyButton({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -40,7 +45,7 @@ export function CopyButton({
     <Button
       variant={variant}
       size={size}
-      onClick={handleCopy}
+      onClick={() => void handleCopy()}
       className={className}
       aria-label={copied ? "Copied" : "Copy"}
       {...buttonProps}

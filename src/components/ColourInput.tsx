@@ -1,6 +1,7 @@
-import { Color, formatCss, formatHex, parse } from "@/lib/culori";
 import React, { useMemo } from "react";
+
 import { Label } from "@/components/ui/label";
+import { Color, formatCss, formatHex, parse } from "@/lib/culori";
 
 interface ColourInputProps {
   id: string;
@@ -15,7 +16,9 @@ export function ColourInput({ id, label, value, onChange }: ColourInputProps) {
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const parsed = parse(event.target.value);
-    if (parsed === undefined) return;
+    if (parsed === undefined) {
+      return;
+    }
     onChange(parsed);
   }
 
