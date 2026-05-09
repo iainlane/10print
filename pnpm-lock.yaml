@@ -110,7 +110,7 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.0.2(jiti@2.6.1))
       '@shikijs/types':
-        specifier: ^4.0.1
+        specifier: 4.0.1
         version: 4.0.1
       '@stylistic/eslint-plugin':
         specifier: 5.9.0
