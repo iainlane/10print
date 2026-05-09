@@ -37,6 +37,15 @@
       matchUpdateTypes: ["digest"],
     },
     {
+      // Don't fold pin updates into the monorepo/non-major groups - those
+      // groups can be empty (when the other monorepo siblings are already
+      // pinned) and the pin update silently disappears with them. Forcing a
+      // null groupName makes Renovate raise pin updates as standalone PRs.
+      matchUpdateTypes: ["pin"],
+      groupName: null,
+      groupSlug: null,
+    },
+    {
       // Run the custom matcher on early Monday mornings (UTC)
       schedule: "* 0-4 * * 1",
       matchPackageNames: ["ghcr.io/renovatebot/renovate"],
