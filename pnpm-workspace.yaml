@@ -5,8 +5,6 @@ allowBuilds:
 
 ignoredBuiltDependencies:
   - '@tailwindcss/oxide'
-  - esbuild
-  - workerd
 
 onlyBuiltDependencies:
   - csstree
