@@ -1,7 +1,10 @@
+allowBuilds:
+  esbuild: false
+  sharp: true
+  workerd: false
+
 ignoredBuiltDependencies:
   - '@tailwindcss/oxide'
-  - esbuild
-  - workerd
 
 onlyBuiltDependencies:
   - csstree
