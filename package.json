@@ -29,32 +29,32 @@
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.3",
     "tw-animate-css": "^1.2.5",
-    "zod": "4.3.6"
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.25.6",
+    "@cloudflare/vite-plugin": "1.36.0",
     "@eslint/js": "10.0.1",
     "@shikijs/types": "4.0.2",
     "@stylistic/eslint-plugin": "5.10.0",
     "@tailwindcss/typography": "0.5.19",
-    "@types/jsdom": "28.0.0",
+    "@types/jsdom": "28.0.1",
     "@types/lodash.debounce": "4.0.9",
-    "@types/node": "24.11.0",
+    "@types/node": "24.12.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/seedrandom": "3.0.8",
     "@typescript-eslint/utils": "8.59.2",
-    "@vitejs/plugin-react": "5.1.4",
+    "@vitejs/plugin-react": "5.2.0",
     "@vitest/browser-playwright": "4.1.5",
     "@vitest/coverage-v8": "4.1.5",
     "eslint": "10.3.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-simple-import-sort": "13.0.0",
-    "globals": "17.4.0",
+    "globals": "17.6.0",
     "playwright": "1.59.1",
     "prettier": "3.8.3",
-    "prettier-plugin-tailwindcss": "0.7.2",
+    "prettier-plugin-tailwindcss": "0.8.0",
     "stylelint": "17.11.0",
     "stylelint-config-standard": "40.0.0",
     "stylelint-config-tailwindcss": "1.0.1",
@@ -62,12 +62,12 @@
     "typescript-eslint": "8.59.2",
     "vite": "7.3.2",
     "vitest": "4.1.5",
-    "vitest-browser-react": "2.0.5",
+    "vitest-browser-react": "2.2.0",
     "vitest-mock-extended": "4.0.0",
-    "wrangler": "4.69.0"
+    "wrangler": "4.88.0"
   },
   "engines": {
-    "node": "24.14.0"
+    "node": "24.15.0"
   },
   "overrides": {
     "is-interactive": "npm:@socketregistry/is-interactive@^1",
@@ -79,7 +79,7 @@
   },
   "main": "src/index.html",
   "name": "10print",
-  "packageManager": "pnpm@10.30.3+sha512.c961d1e0a2d8e354ecaa5166b822516668b7f44cb5bd95122d590dd81922f606f5473b6d23ec4a5be05e7fcd18e8488d47d978bbe981872f1145d06e9a740017",
+  "packageManager": "pnpm@10.33.4+sha512.1c67b3b359b2d408119ba1ed289f34b8fc3c6873412bec6fd264fbdc82489e510fcbecb9ce9d22dae7f3b76269d8441046014bdca53b9979cd7a561ad631b800",
   "scripts": {
     "build": "vite build && vite build --config vite.config.embeddable.ts",
     "deploy": "pnpm run build && wrangler deploy",
