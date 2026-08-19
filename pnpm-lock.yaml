@@ -193,8 +193,8 @@ importers:
         specifier: 2.2.0
         version: 2.2.0(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vitest@4.1.10)
       vitest-mock-extended:
-        specifier: 4.0.0
-        version: 4.0.0(typescript@6.0.3)(vitest@4.1.10)
+        specifier: 5.1.1
+        version: 5.1.1(typescript@6.0.3)(vitest@4.1.10)
       wrangler:
         specifier: 4.121.0
         version: 4.121.0
@@ -3071,10 +3071,10 @@ packages:
       '@types/react-dom':
         optional: true
 
-  vitest-mock-extended@4.0.0:
-    resolution: {integrity: sha512-m2FmH8JYfxzZoLsHuhXRY+Pv++a3zd91HYpSz81tpRLEHbtFkEL2QcWvJowucWuNTirzQURKfWbJJSXbYqkTsA==}
+  vitest-mock-extended@5.1.1:
+    resolution: {integrity: sha512-k5Ji2+t4+nsdepXeakCkilyKydtgaULtP0HsjwQGIZsYr5hDTqrwCtC0+Sh0YBKUS7cY/Wxplf7SVjcZstTIMQ==}
     peerDependencies:
-      typescript: 3.x || 4.x || 5.x || 6.x
+      typescript: 3.x || 4.x || 5.x || 6.x || 7.x
       vitest: '>=4.0.0'
 
   vitest@4.1.10:
@@ -5766,7 +5766,7 @@ snapshots:
       '@types/react': 19.2.18
       '@types/react-dom': 19.2.4(@types/react@19.2.18)
 
-  vitest-mock-extended@4.0.0(typescript@6.0.3)(vitest@4.1.10):
+  vitest-mock-extended@5.1.1(typescript@6.0.3)(vitest@4.1.10):
     dependencies:
       ts-essentials: 10.2.1(typescript@6.0.3)
       typescript: 6.0.3
