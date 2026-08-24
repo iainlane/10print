@@ -49,11 +49,11 @@ jobs:
           private-key: ${{ secrets.LANEYBOT_PRIVATE_KEY }}
 
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@e09d604f8f803bb527bd8321ed5be06c460b8682 # v46.2.2
+        uses: renovatebot/github-action@5402b206248e5a8c8427a15102702eb9c1793efc # v46.2.4
         with:
           configurationFile: .github/renovate-config.json5
           # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
-          renovate-version: 44.30.3@sha256:d3d60a87bab73203327dd664f94f11e83091441ee4964c920662d83023446395
+          renovate-version: 44.39.3@sha256:27f008cc48b952dff1fdceed42ef91f243f31e64596dc7f5a8754467961243ad
           token: ${{ steps.generate-token.outputs.token }}
         env:
           LOG_LEVEL: ${{ github.event_name == 'pull_request' && 'debug' || 'info' }}
