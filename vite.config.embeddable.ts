@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { defineConfig, type Plugin } from "vite";
 
-const src = path.resolve(__dirname, "./src");
+const src = path.resolve(import.meta.dirname, "./src");
 
 /**
  * Generates stable-URL shim files that re-export from content-hashed bundles,
@@ -68,11 +68,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         "background-body": path.resolve(
-          __dirname,
+          import.meta.dirname,
           "src/embeddable/background-body.ts",
         ),
         "background-element": path.resolve(
-          __dirname,
+          import.meta.dirname,
           "src/embeddable/background-element.ts",
         ),
       },

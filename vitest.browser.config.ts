@@ -11,7 +11,7 @@ export default defineConfig({
     name: "browser",
     include: ["src/**/*.browser.test.{ts,tsx}"],
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
     browser: {
       enabled: true,
