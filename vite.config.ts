@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-const src = path.resolve(__dirname, "./src");
+const src = path.resolve(import.meta.dirname, "./src");
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), cloudflare()],
@@ -19,8 +19,8 @@ export default defineConfig({
       build: {
         rollupOptions: {
           input: {
-            demo: path.resolve(__dirname, "demo.html"),
-            main: path.resolve(__dirname, "index.html"),
+            demo: path.resolve(import.meta.dirname, "demo.html"),
+            main: path.resolve(import.meta.dirname, "index.html"),
           },
         },
       },
