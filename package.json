@@ -34,7 +34,7 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.53.1",
     "@eslint/js": "10.0.1",
-    "@shikijs/types": "4.4.3",
+    "@shikijs/types": "4.6.0",
     "@stylistic/eslint-plugin": "5.10.0",
     "@tailwindcss/typography": "0.5.20",
     "@types/jsdom": "30.0.0",
